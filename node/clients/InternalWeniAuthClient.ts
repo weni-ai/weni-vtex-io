@@ -26,13 +26,15 @@ export class InternalWeniAuthClient extends JanusClient {
   private async getToken(): Promise<string> {
     const tokenEndpoint = process.env.WENI_OIDC_TOKEN_ENDPOINT || 'https://accounts.weni.ai/auth/realms/weni-staging/protocol/openid-connect/token'
     const clientId = process.env.WENI_OIDC_CLIENT_ID || 'vtex-app'
-    const clientSecret = process.env.WENI_OIDC_CLIENT_SECRET || 'l5dLqPKHP7K9x39Re0AZDKJEk0Rgu0Yv'
+    const clientSecret = process.env.WENI_OIDC_CLIENT_SECRET || 'X'
 
     const data = querystring.stringify({
       client_id: clientId,
       client_secret: clientSecret,
       grant_type: 'client_credentials',
     })
+
+    console.log("tokenEndpoint", tokenEndpoint) //TODO: Remove it
   
     // Set the expected response type explicitly to include access_token
     const response = await this.http.post<{ access_token: string }>(tokenEndpoint, data)
