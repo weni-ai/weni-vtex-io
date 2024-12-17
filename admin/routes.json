@@ -1,0 +1,6 @@
+{
+  "admin.app.weni-commerce": {
+    "component": "AdminExample",
+    "path": "/admin/app/weni-commerce"
+  }
+}

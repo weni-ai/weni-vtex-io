@@ -4,8 +4,17 @@
   "version": "0.0.1",
   "title": "Weni vtex IO",
   "description": "App for configuring features on weni",
+  "dependencies": {
+    "vtex.pixel-interfaces": "1.x"
+  },
   "builders": {
-    "node": "6.x"
+    "node": "6.x",
+    "react": "3.x",
+    "store": "0.x",
+    "pixel": "0.x",
+    "docs": "0.x",
+    "admin": "0.x",
+    "messages": "1.x"
   },
   "policies": [
     {
