@@ -6,7 +6,7 @@ import {
 
 export default function() {
   return null;
-} // no-op for extension point
+}
 
 function getUser(): Promise<{phone: {value: string}}> {
   return new Promise((resolve) => {
@@ -16,37 +16,49 @@ function getUser(): Promise<{phone: {value: string}}> {
   })
 }
 
-fetch('/api/checkout/pub/orderForm').then(response => response.json()).then(async data => {
-  let phone = data.clientProfileData.phone;
-  let user = null;
+const timeToCallNextAbandonedCartUpdateInSeconds = 15 * 60; // 15 minutes
+let seeOrderFormTimeout: number;
 
-  if (!phone) {
-    console.log('will try to get phone')
-    user = await getUser();
-    phone = user.phone.value;
-  }
+function seeOrderForm() {
+  console.log('calling');
+  clearTimeout(seeOrderFormTimeout);
+  
+  fetch('/api/checkout/pub/orderForm')
+    .then(response => response.json())
+    .then(async data => {
+      seeOrderFormTimeout = setTimeout(seeOrderForm, timeToCallNextAbandonedCartUpdateInSeconds * 1E3);
+      
+      let phone = data.clientProfileData?.phone;
+      let user = null;
 
-  console.log('phone', phone);
-  console.log('user', user);
-})
+      if (!phone) {
+        user = await getUser();
+        phone = user.phone?.value;
+      }
 
+      fetch('/_v/updateOrderFormForAbandonedCart', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          orderFormId: data.orderFormId,
+          itemsLength: data.items.length,
+          itemsStatus: data.items.length === 0 ? 'empty' : 'hasItems',
+          phone,
+        }),
+      });
+    })
+}
 
-
-console.log('hello world!')
-
+seeOrderForm();
 
 export function handleEvents(e: PixelMessage) {
-  console.log('event', e.data.eventName);
-
   switch (e.data.eventName) {
     case 'vtex:addToCart': {
-      console.log('novo pixel .tsx event', e.data);
-
-      
-
-      fetch('/_v/credentials')
-
-      return
+      seeOrderForm();
+      return;
     }
   }
 }
