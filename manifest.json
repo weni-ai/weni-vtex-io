@@ -35,21 +35,21 @@
       "name": "outbound-access",
       "attrs": {
         "host": "portal.vtexcommercestable.com.br",
-        "path": "/*"
+        "path": "*"
       }
     },
     {
       "name": "outbound-access",
       "attrs": {
         "host": "accounts.weni.ai",
-        "path": "/*"
+        "path": "/auth/realms/weni-staging/protocol/openid-connect/token"
       }
     },
     {
       "name": "outbound-access",
       "attrs": {
         "host": "retailsetup.stg.cloud.weni.ai",
-        "path": "/*"
+        "path": "*"
       }
     },
     {

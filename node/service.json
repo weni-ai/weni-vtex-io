@@ -8,7 +8,7 @@
   "env": {
     "COMMERCE_API_BASE_URL": "https://retailsetup.stg.cloud.weni.ai",
     "OIDC_RP_CLIENT_ID": "vtex-app",
-    "OIDC_RP_CLIENT_SECRET": "X",
+    "OIDC_RP_CLIENT_SECRET": "",
     "OIDC_OP_TOKEN_ENDPOINT": "https://accounts.weni.ai/auth/realms/weni-staging/protocol/openid-connect/token"
   },
   "routes": {
@@ -18,6 +18,10 @@
     },
     "integrateAvailableFeatures": {
       "path": "/_v/integrate-available-features",
+      "public": true
+    },
+    "proxyAbandonedCartNotification": {
+      "path": "/_v/abandoned-cart-notification",
       "public": true
     }
   }

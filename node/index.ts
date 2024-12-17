@@ -1,9 +1,9 @@
 import type { ClientsConfig, ServiceContext, RecorderState } from '@vtex/api'
-
 import { LRUCache, Service, method } from '@vtex/api' // Import 'method' to define routes with HTTP methods
 import { Clients } from './clients' // Importing the clients module
 import { getFeatureList } from './middlewares/getFeatureList' // Feature listing middleware
-import { integrateAvailableFeatures } from './middlewares/integrateAvailableFeatures'
+import { integrateAvailableFeatures } from './middlewares/integrateAvailableFeatures' // Feature integration middleware
+import { proxyAbandonedCartNotification } from './middlewares/proxyAbandonedCartNotification' // Proxy abandoned cart notification middleware
 
 // Setting cache duration in milliseconds and creating an LRUCache instance
 const TIMEOUT_MS = 15000
@@ -27,6 +27,8 @@ const clients: ClientsConfig<Clients> = {
     },
   },
 }
+
+// Global context declaration
 declare global {
   type Context = ServiceContext<Clients, State>
 
@@ -34,7 +36,6 @@ declare global {
     code: number
   }
 }
-
 
 // VTEX IO service using the configured middlewares
 export default new Service({
@@ -45,6 +46,9 @@ export default new Service({
     }),
     integrateAvailableFeatures: method({ 
       POST: [integrateAvailableFeatures],
-    })
+    }),
+    proxyAbandonedCartNotification: method({
+      POST: [proxyAbandonedCartNotification],
+    }),
   },
 })
