@@ -1,19 +1,25 @@
-import { JanusClient, InstanceOptions, IOContext } from '@vtex/api'
+import { ExternalClient, InstanceOptions, IOContext } from '@vtex/api'
 import querystring from 'querystring'
 
 /**
  * Client for internal authentication with Weni services.
  * Retrieves the access token to authorize requests.
  */
-export class InternalWeniAuthClient extends JanusClient {
+export class InternalWeniAuthClient extends ExternalClient {
   constructor(ctx: IOContext, options?: InstanceOptions) {
-    super(ctx, {
+    const baseURL = process.env.OIDC_OP_TOKEN_ENDPOINT
+
+    if (!baseURL) {
+      throw new Error('Environment variable OIDC_OP_TOKEN_ENDPOINT is not set.')
+    }
+
+    super(baseURL, ctx, {
       ...options,
       headers: {
-        ...options?.headers,
         'Content-Type': 'application/x-www-form-urlencoded',
+        ...(options?.headers ?? {}),
       },
-      timeout: 15000,
+      timeout: options?.timeout ?? 10000, // Default timeout set to 10 seconds
     })
   }
 
@@ -24,9 +30,12 @@ export class InternalWeniAuthClient extends JanusClient {
    * @throws Error if token retrieval fails.
    */
   private async getToken(): Promise<string> {
-    const tokenEndpoint = process.env.WENI_OIDC_TOKEN_ENDPOINT || 'https://accounts.weni.ai/auth/realms/weni-staging/protocol/openid-connect/token'
-    const clientId = process.env.WENI_OIDC_CLIENT_ID || 'vtex-app'
-    const clientSecret = process.env.WENI_OIDC_CLIENT_SECRET || 'X'
+    const clientId = process.env.OIDC_RP_CLIENT_ID
+    const clientSecret = process.env.OIDC_RP_CLIENT_SECRET
+
+    if (!clientId || !clientSecret) {
+      throw new Error('Environment variables OIDC_RP_CLIENT_ID or OIDC_RP_CLIENT_SECRET are not set.')
+    }
 
     const data = querystring.stringify({
       client_id: clientId,
@@ -34,27 +43,45 @@ export class InternalWeniAuthClient extends JanusClient {
       grant_type: 'client_credentials',
     })
 
-    console.log("tokenEndpoint", tokenEndpoint) //TODO: Remove it
-  
-    // Set the expected response type explicitly to include access_token
-    const response = await this.http.post<{ access_token: string }>(tokenEndpoint, data)
-    const token = response.access_token
-    console.log("TOKEN", token)
-    if (!token) {
-      throw new Error('Failed to retrieve access token')
+    const retries = 3
+    let attempt = 0
+
+    while (attempt < retries) {
+      try {
+        const response = await this.http.post<{ access_token: string }>('', data)
+        const token = response.access_token
+        if (!token) {
+          throw new Error('Token response missing access_token field.')
+        }
+        return `Bearer ${token}`
+      } catch (error) {
+        attempt++
+        if (attempt >= retries) {
+          console.error(`Failed to fetch access token after ${retries} attempts: ${error.message}`)
+          throw new Error(`Failed to fetch access token after ${retries} attempts.`)
+        }
+      }
+      await new Promise((resolve) => setTimeout(resolve, Math.pow(2, attempt) * 1000))
     }
-    return `Bearer ${token}`
+
+    console.error('Unexpected error: failed to fetch access token and reached an unreachable state.')
+    throw new Error('Unexpected error: failed to fetch access token and reached an unreachable state.')
   }
 
   /**
    * Provides headers for authenticated requests.
+   * 
+   * Example:
+   * ```typescript
+   * const authClient = new InternalWeniAuthClient(context)
+   * const headers = await authClient.getAuthHeaders()
+   * ```
    * 
    * @returns A promise resolving to an object containing authorization headers.
    */
   public async getAuthHeaders(): Promise<Record<string, string>> {
     const token = await this.getToken()
     return {
-      'Content-Type': 'application/json; charset=utf-8',
       Authorization: token,
     }
   }

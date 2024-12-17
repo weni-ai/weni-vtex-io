@@ -1,15 +1,20 @@
-import { JanusClient, InstanceOptions, IOContext } from '@vtex/api'
+import { ExternalClient, InstanceOptions, IOContext } from '@vtex/api'
 
 /**
  * Client for interacting with the Commerce module to fetch and integrate feature details.
  * Handles internal authentication and environment-specific configurations.
  */
-export class CommerceClient extends JanusClient {
-  constructor(ctx: IOContext, options?: InstanceOptions) {
-    super(ctx, {
+export class CommerceClient extends ExternalClient {
+  constructor(context: IOContext, options?: InstanceOptions) {
+    const baseUrl =
+      context.workspace === 'production'
+        ? process.env.COMMERCE_API_BASE_URL || ''
+        : 'https://11f7-170-82-73-20.ngrok-free.app' // TODO: Remove It
+
+    super(baseUrl, context, {
       ...options,
       headers: {
-        ...options?.headers,
+        ...(options?.headers ?? {}),
         'Content-Type': 'application/json',
       },
       timeout: 15000,
@@ -18,23 +23,18 @@ export class CommerceClient extends JanusClient {
 
   /**
    * Retrieves available features based on the provided filters.
-   * 
+   *
    * @param params - The filter parameters for the request.
    * @param token - Authorization token for internal communication.
    * @param projectUUID - The unique identifier of the project.
    * @returns Promise resolving to the list of features.
    */
   public async getFeatures(
-    params: { category: string; can_vtex_integrate: boolean },
+    params: { category: string; can_vtex_integrate: string },
     token: string,
     projectUUID: string
   ): Promise<any> {
-    const baseUrl = this.context.workspace === 'production'
-      ? process.env.COMMERCE_API_BASE_URL
-      : 'https://f3d1-170-82-73-20.ngrok-free.app' //TODO: Remove It
-
-    const url = `${baseUrl}/v2/feature/${projectUUID}/`
-    // Set the Authorization header with Bearer token
+    const url = `/v2/feature/${projectUUID}/`
     return this.http.get(url, {
       headers: {
         Authorization: `${token}`,
@@ -45,7 +45,7 @@ export class CommerceClient extends JanusClient {
 
   /**
    * Integrates a feature with a specified project.
-   * 
+   *
    * @param featureUUID - The unique identifier of the feature to be integrated.
    * @param projectUUID - The unique identifier of the project.
    * @param token - Authorization token for internal communication.
@@ -56,12 +56,8 @@ export class CommerceClient extends JanusClient {
     projectUUID: string,
     token: string
   ): Promise<any> {
-    const baseUrl = this.context.workspace === 'production'
-      ? process.env.COMMERCE_API_BASE_URL
-      : 'https://f3d1-170-82-73-20.ngrok-free.app' //TODO: Remove It
+    const url = `/v2/feature/${featureUUID}/integrate/`
 
-    const url = `${baseUrl}/v2/feature/${featureUUID}/integrate/`
-    // Set the Authorization header with Bearer token
     return this.http.post(
       url,
       {
@@ -74,5 +70,19 @@ export class CommerceClient extends JanusClient {
         },
       }
     )
+  }
+
+  /**
+   * Sends the abandoned cart notification to the Commerce backend.
+   *
+   * @param data - The data to be sent.
+   * @returns The response from the Commerce backend.
+   */
+  public async sendAbandonedCartNotification(data: any): Promise<any> {
+    const headers = {
+      'Content-Type': 'application/json',
+    }
+
+    return this.http.post('/webhook/vtex/abandoned-cart/api/notification/', data, { headers })
   }
 }

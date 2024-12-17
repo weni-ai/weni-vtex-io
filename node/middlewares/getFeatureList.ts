@@ -1,24 +1,27 @@
-import { Context } from 'koa'
-import { InternalWeniAuthClient } from '../clients/InternalWeniAuthClient'
+import { ServiceContext } from '@vtex/api'
+import { Clients } from '../clients'
 
 /**
  * Middleware to retrieve a list of available features for a specific project that can integrate with VTEX.
  * 
- * @param ctx - Koa context object.
+ * @param ctx - VTEX IO context object.
  * @param next - Function to proceed to the next middleware.
  */
-export async function getFeatureList(ctx: Context, next: () => Promise<any>) {
+export async function getFeatureList(ctx: ServiceContext<Clients>, next: () => Promise<any>) {
   const { projectUUID } = ctx.query // Obtaining the projectUUID from query parameters
-  const commerceClient = ctx.clients.commerceClient // Accessing commerceClient without "new"
+  const commerceClient = ctx.clients.commerceClient
 
-  if (!projectUUID) {
+  // Ensure projectUUID is a string
+  const projectUUIDString = Array.isArray(projectUUID) ? projectUUID[0] : projectUUID
+
+  if (!projectUUIDString) {
     ctx.status = 400
     ctx.body = { message: 'Project UUID is required' }
     return
   }
 
-  // Instantiate the InternalWeniAuthClient to get the authorization token
-  const authClient = new InternalWeniAuthClient(ctx.vtex)
+  // Use the InternalWeniAuthClient from the context's clients
+  const authClient = ctx.clients.internalWeniAuthClient
   const headers = await authClient.getAuthHeaders()
 
   // Call CommerceClient's getFeatures method with the retrieved token and project UUID
@@ -28,8 +31,9 @@ export async function getFeatureList(ctx: Context, next: () => Promise<any>) {
       can_vtex_integrate: 'true',
     },
     headers.Authorization,
-    projectUUID
+    projectUUIDString
   )
+
   // Set response data and status
   if (!response.results || response.results.length === 0) {
     ctx.body = { message: 'No features available for integration.' }
