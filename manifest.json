@@ -48,7 +48,28 @@
     {
       "name": "outbound-access",
       "attrs": {
+        "host": "retailsetup.weni.ai",
+        "path": "*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
         "host": "retailsetup.stg.cloud.weni.ai",
+        "path": "*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "api.weni.ai",
+        "path": "*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "api.stg.cloud.weni.ai",
         "path": "*"
       }
     },

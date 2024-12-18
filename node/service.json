@@ -23,6 +23,10 @@
     "proxyAbandonedCartNotification": {
       "path": "/_v/abandoned-cart-notification",
       "public": true
+    },
+    "createUserAndProject": {
+      "path": "/_v/create-user-and-project",
+      "public": true
     }
   }
 }
