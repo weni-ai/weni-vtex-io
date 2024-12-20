@@ -5,6 +5,7 @@ import { getFeatureList } from './middlewares/getFeatureList' // Feature listing
 import { integrateAvailableFeatures } from './middlewares/integrateAvailableFeatures' // Feature integration middleware
 import { proxyAbandonedCartNotification } from './middlewares/proxyAbandonedCartNotification' // Proxy abandoned cart notification middleware
 import { createUserAndProject } from './middlewares/createUserAndProject' // Middleware to create user, project, and organization in Weni Engage
+import { proxyWhatsAppIntegration } from './middlewares/proxyWhatsAppIntegration' // Middleware to handle WhatsApp Cloud integration
 
 // Setting cache duration in milliseconds and creating an LRUCache instance
 const TIMEOUT_MS = 15000
@@ -53,6 +54,9 @@ export default new Service({
     }),
     createUserAndProject: method({
       POST: [createUserAndProject],
+    }),
+    proxyWhatsAppIntegration: method({
+      POST: [proxyWhatsAppIntegration],
     }),
   },
 })

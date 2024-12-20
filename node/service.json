@@ -6,6 +6,8 @@
   "maxReplicas": 4,
   "workers": 1,
   "env": {
+    "ENGAGE_API_BASE_URL": "https://api.stg.cloud.weni.ai",
+    "INTEGRATIONS_ENGINE_API_BASE_URL": "integrations-engine.stg.cloud.weni.ai",
     "COMMERCE_API_BASE_URL": "https://retailsetup.stg.cloud.weni.ai",
     "OIDC_RP_CLIENT_ID": "vtex-app",
     "OIDC_RP_CLIENT_SECRET": "",
@@ -26,6 +28,10 @@
     },
     "createUserAndProject": {
       "path": "/_v/create-user-and-project",
+      "public": true
+    },
+    "proxyWhatsAppIntegration": {
+      "path": "/_v/whatsapp-integration",
       "public": true
     }
   }

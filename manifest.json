@@ -74,6 +74,20 @@
       }
     },
     {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "integrations-engine.weni.ai",
+        "path": "*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "integrations-engine.stg.cloud.weni.ai",
+        "path": "*"
+      }
+    },
+    {
       "name": "colossus-fire-event"
     },
     {

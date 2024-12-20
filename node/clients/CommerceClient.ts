@@ -6,11 +6,10 @@ import { ExternalClient, InstanceOptions, IOContext } from '@vtex/api'
  */
 export class CommerceClient extends ExternalClient {
   constructor(context: IOContext, options?: InstanceOptions) {
-    const baseUrl =
-      context.workspace === 'production'
-        ? process.env.COMMERCE_API_BASE_URL || ''
-        : 'https://11f7-170-82-73-20.ngrok-free.app' // TODO: Remove It
-
+    const baseUrl = process.env.COMMERCE_API_BASE_URL
+    if (!baseUrl) {
+      throw new Error('COMMERCE_API_BASE_URL is not defined')
+    }
     super(baseUrl, context, {
       ...options,
       headers: {
