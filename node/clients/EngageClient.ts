@@ -6,8 +6,10 @@ import { ExternalClient, InstanceOptions, IOContext } from '@vtex/api'
  */
 export class EngageClient extends ExternalClient {
     constructor(ctx: IOContext, options?: InstanceOptions) {
-        const baseURL =
-            process.env.WENI_ENGAGE_API_BASE_URL || 'https://api.stg.cloud.weni.ai'
+        const baseURL = process.env.WENI_ENGAGE_API_BASE_URL
+        if (!baseURL) {
+            throw new Error('WENI_ENGAGE_API_BASE_URL is not defined')
+        }
         super(baseURL, ctx, {
             ...options,
             headers: {
