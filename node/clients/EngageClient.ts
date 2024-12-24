@@ -1,4 +1,5 @@
 import { ExternalClient, InstanceOptions, IOContext } from '@vtex/api'
+import { ENGAGE_API_BASE_URL } from '../env'
 
 /**
  * Client for interacting with Weni Engage API.
@@ -6,9 +7,9 @@ import { ExternalClient, InstanceOptions, IOContext } from '@vtex/api'
  */
 export class EngageClient extends ExternalClient {
     constructor(ctx: IOContext, options?: InstanceOptions) {
-        const baseURL = process.env.WENI_ENGAGE_API_BASE_URL
+        const baseURL = ENGAGE_API_BASE_URL
         if (!baseURL) {
-            throw new Error('WENI_ENGAGE_API_BASE_URL is not defined')
+            throw new Error('ENGAGE_API_BASE_URL is not defined')
         }
         super(baseURL, ctx, {
             ...options,

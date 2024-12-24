@@ -1,18 +1,10 @@
 {
   "memory": 256,
   "ttl": 10,
-  "timeout": 2,
+  "timeout": 60,
   "minReplicas": 2,
   "maxReplicas": 4,
   "workers": 1,
-  "env": {
-    "ENGAGE_API_BASE_URL": "https://api.stg.cloud.weni.ai",
-    "INTEGRATIONS_ENGINE_API_BASE_URL": "integrations-engine.stg.cloud.weni.ai",
-    "COMMERCE_API_BASE_URL": "https://retailsetup.stg.cloud.weni.ai",
-    "OIDC_RP_CLIENT_ID": "vtex-app",
-    "OIDC_RP_CLIENT_SECRET": "",
-    "OIDC_OP_TOKEN_ENDPOINT": "https://accounts.weni.ai/auth/realms/weni-staging/protocol/openid-connect/token"
-  },
   "routes": {
     "getFeatureList": {
       "path": "/_v/get-feature-list",
