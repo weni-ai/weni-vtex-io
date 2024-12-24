@@ -1,5 +1,6 @@
 import { ExternalClient, InstanceOptions, IOContext } from '@vtex/api'
 import querystring from 'querystring'
+import { OIDC_OP_TOKEN_ENDPOINT, OIDC_RP_CLIENT_ID, OIDC_RP_CLIENT_SECRET } from '../env'
 
 /**
  * Client for internal authentication with Weni services.
@@ -7,7 +8,7 @@ import querystring from 'querystring'
  */
 export class InternalWeniAuthClient extends ExternalClient {
   constructor(ctx: IOContext, options?: InstanceOptions) {
-    const baseURL = process.env.OIDC_OP_TOKEN_ENDPOINT
+    const baseURL = OIDC_OP_TOKEN_ENDPOINT
 
     if (!baseURL) {
       throw new Error('Environment variable OIDC_OP_TOKEN_ENDPOINT is not set.')
@@ -30,8 +31,8 @@ export class InternalWeniAuthClient extends ExternalClient {
    * @throws Error if token retrieval fails.
    */
   private async getToken(): Promise<string> {
-    const clientId = process.env.OIDC_RP_CLIENT_ID
-    const clientSecret = process.env.OIDC_RP_CLIENT_SECRET
+    const clientId = OIDC_RP_CLIENT_ID
+    const clientSecret = OIDC_RP_CLIENT_SECRET
 
     if (!clientId || !clientSecret) {
       throw new Error('Environment variables OIDC_RP_CLIENT_ID or OIDC_RP_CLIENT_SECRET are not set.')

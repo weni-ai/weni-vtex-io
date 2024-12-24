@@ -1,4 +1,5 @@
 import { ExternalClient, InstanceOptions, IOContext } from '@vtex/api'
+import { INTEGRATIONS_ENGINE_API_BASE_URL } from '../env'
 
 /**
  * Client for interacting with the Integration Engine module.
@@ -6,10 +7,10 @@ import { ExternalClient, InstanceOptions, IOContext } from '@vtex/api'
  */
 export class IntegrationEngineClient extends ExternalClient {
     constructor(ctx: IOContext, options?: InstanceOptions) {
-        const baseUrl = process.env.INTEGRATIONS_ENGINE_API_BASE_URL
+        const baseUrl = INTEGRATIONS_ENGINE_API_BASE_URL
         if (!baseUrl) {
             throw new Error('INTEGRATIONS_ENGINE_API_BASE_URL is not defined')
-          }
+        }
         super(baseUrl, ctx, {
             ...options,
             headers: {

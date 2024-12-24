@@ -1,4 +1,5 @@
 import { ExternalClient, InstanceOptions, IOContext } from '@vtex/api'
+import { COMMERCE_API_BASE_URL } from '../env';
 
 /**
  * Client for interacting with the Commerce module to fetch and integrate feature details.
@@ -6,7 +7,7 @@ import { ExternalClient, InstanceOptions, IOContext } from '@vtex/api'
  */
 export class CommerceClient extends ExternalClient {
   constructor(context: IOContext, options?: InstanceOptions) {
-    const baseUrl = process.env.COMMERCE_API_BASE_URL
+    const baseUrl = COMMERCE_API_BASE_URL
     if (!baseUrl) {
       throw new Error('COMMERCE_API_BASE_URL is not defined')
     }
