@@ -3,6 +3,7 @@ import { CommerceClient } from './CommerceClient'
 import { InternalWeniAuthClient } from './InternalWeniAuthClient'
 import { EngageClient } from './EngageClient'
 import { IntegrationEngineClient } from './IntegrationEngineClient'
+import { AgentBuilderClient } from './AgentBuilderClient'
 
 export class Clients extends IOClients {
   public get commerceClient() {
@@ -19,5 +20,9 @@ export class Clients extends IOClients {
 
   public get integrationEngineClient() {
     return this.getOrSet('integrationEngineClient', IntegrationEngineClient)
+  }
+
+  public get agentBuilderClient() {
+    return this.getOrSet('agentBuilderClient', AgentBuilderClient)
   }
 }

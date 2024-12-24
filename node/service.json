@@ -33,6 +33,10 @@
     "proxyWhatsAppIntegration": {
       "path": "/_v/whatsapp-integration",
       "public": true
+    },
+    "createAgentBuilder": {
+      "path": "/_v/create-agent-builder",
+      "public": true
     }
   }
 }
