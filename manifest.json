@@ -88,6 +88,20 @@
       }
     },
     {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "nexus.stg.cloud.weni.ai",
+        "path": "*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "nexus.weni.ai",
+        "path": "*"
+      }
+    },
+    {
       "name": "colossus-fire-event"
     },
     {
