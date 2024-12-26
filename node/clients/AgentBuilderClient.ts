@@ -7,8 +7,6 @@ import { AGENT_BUILDER_BASE_URL } from '../env'
  * Handles internal authentication and environment-specific configurations.
  */
 export class AgentBuilderClient extends ExternalClient {
-    
-    
     constructor(context: IOContext, options?: InstanceOptions) {
         const baseUrl = AGENT_BUILDER_BASE_URL;
         if (!baseUrl) {

@@ -91,7 +91,7 @@
       "name": "outbound-access",
       "attrs": {
         "host": "nexus.stg.cloud.weni.ai",
-        "path": "/api/d289c440-5940-4a10-aecc-56ae0ebb0a4c/commerce-router/"
+        "path": "*"
       }
     },
     {
