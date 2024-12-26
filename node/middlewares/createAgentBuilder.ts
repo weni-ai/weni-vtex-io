@@ -1,5 +1,6 @@
 import { ServiceContext } from '@vtex/api'
 import { Clients } from '../clients'
+import { json } from 'co-body'
 
 export async function createAgentBuilder(ctx: ServiceContext<Clients>, next: () => Promise<any>) {
     const { projectUUID } = ctx.query;
@@ -9,25 +10,28 @@ export async function createAgentBuilder(ctx: ServiceContext<Clients>, next: () 
     if (!projectUUIDString) {
         ctx.status = 400;
         ctx.body = { message: 'Project UUID is required'};
+        return;
     }
 
     const authClient = ctx.clients.internalWeniAuthClient;
     const headers = await authClient.getAuthHeaders();
-    let agent = new Map<string, string>();
-    agent.set("name", ctx.params.agent["name"]);
-    agent.set("occupation", ctx.params.agent["occupation"]);
-    agent.set("objective", ctx.params.agent["objective"]);
-
+    
+    const requestBody = await json(ctx.req)
+    const { agent, links } = requestBody;
+    const final_agent = {
+        "name": agent.name,
+        "goal": agent.objective,
+        "role": agent.occupation,
+        "personality": "Amigável"
+    }
     const body = {
-        "agent": agent,
-        "links": [
-            ctx.params.links[0]
-        ]
+        "agent": final_agent,
+        "links": links
     }
     const response = await agentBuilderClient.createAgentBuilder(
+        body,
         headers.Authorization,
         projectUUIDString,
-        body
     );
 
     if (response.results) {

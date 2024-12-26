@@ -1,12 +1,16 @@
 import { ExternalClient, InstanceOptions, IOContext } from '@vtex/api'
 
+import { AGENT_BUILDER_BASE_URL } from '../env'
+
 /**
  * Client for interacting with the Agent Builder module to add a artificial intelligent agent.
  * Handles internal authentication and environment-specific configurations.
  */
 export class AgentBuilderClient extends ExternalClient {
+    
+    
     constructor(context: IOContext, options?: InstanceOptions) {
-        const baseUrl = process.env.AGENT_BUILDER__BASE_URL;
+        const baseUrl = AGENT_BUILDER_BASE_URL;
         if (!baseUrl) {
             throw new Error('AGENT_BUILDER_BASE_URL is not defined');
         }
@@ -21,17 +25,18 @@ export class AgentBuilderClient extends ExternalClient {
     }
 
     public async createAgentBuilder(
+        data: Record<string, any>,
         token: string,
         projectUUID: string,
-        params: {agent: Map<string, string>, links: Array<string>}
     ): Promise<any> {
-        const url = `api/${projectUUID}/commerce-router/`;
+        const url = `/api/${projectUUID}/commerce-router/`;
+
         return this.http.post(
-            url, {
+            url, data, {
             headers: {
-                Authorization: `${token}`,
+                Authorization: token
             },
-            params,
+            
         })
     }
 }
