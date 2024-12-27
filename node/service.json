@@ -29,6 +29,10 @@
     "createAgentBuilder": {
       "path": "/_v/create-agent-builder",
       "public": true
+    },
+    "getOrdersByEmail": {
+      "path": "/_v/orders-by-email",
+      "public": true
     }
   }
 }
