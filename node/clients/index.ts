@@ -5,6 +5,7 @@ import { EngageClient } from './EngageClient'
 import { IntegrationEngineClient } from './IntegrationEngineClient'
 import { AgentBuilderClient } from './AgentBuilderClient'
 import { OmsClient } from './OmsClient'
+import { OrderFormClient } from './OrderFormClient'
 
 
 export class Clients extends IOClients {
@@ -30,5 +31,9 @@ export class Clients extends IOClients {
 
   public get omsClient() {
     return this.getOrSet('omsClient', OmsClient)
+  }
+
+  public get orderFormClient() {
+    return this.getOrSet('orderFormClient', OrderFormClient)
   }
 }

@@ -33,6 +33,10 @@
     "getOrdersByEmail": {
       "path": "/_v/orders-by-email",
       "public": true
+    },
+    "getOrderFormDetails": {
+      "path": "/_v/order-form-details",
+      "public": true
     }
   }
 }
