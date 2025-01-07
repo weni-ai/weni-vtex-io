@@ -9,6 +9,7 @@ import { proxyWhatsAppIntegration } from './middlewares/proxyWhatsAppIntegration
 import { createAgentBuilder } from './middlewares/createAgentBuilder' // Middleware to configure AgentBuilder
 import { getOrdersByEmail } from './middlewares/getOrdersByEmail' // Middleware to fetch orders by user email
 import { getOrderFormDetails } from './middlewares/getOrderFormDetails' // Middleware to fetch order form details by ID
+import { validateInternalUserAuth } from './middlewares/validateInternalUserAuth' // Middleware to validate internal user requests
 
 
 // Setting cache duration in milliseconds and creating an LRUCache instance
@@ -48,28 +49,29 @@ export default new Service({
   clients,
   routes: {
     getFeatureList: method({
-      GET: [getFeatureList],
+      GET: [validateInternalUserAuth, getFeatureList],
     }),
     integrateAvailableFeatures: method({
-      POST: [integrateAvailableFeatures],
+      POST: [validateInternalUserAuth, integrateAvailableFeatures],
     }),
     proxyAbandonedCartNotification: method({
-      POST: [proxyAbandonedCartNotification],
+      POST: [validateInternalUserAuth, proxyAbandonedCartNotification],
     }),
     createUserAndProject: method({
-      POST: [createUserAndProject],
+      POST: [validateInternalUserAuth, createUserAndProject],
     }),
     proxyWhatsAppIntegration: method({
-      POST: [proxyWhatsAppIntegration],
+      POST: [validateInternalUserAuth, proxyWhatsAppIntegration],
     }),
     createAgentBuilder: method({
-      POST: [createAgentBuilder]
+      POST: [validateInternalUserAuth, createAgentBuilder]
     }),
     getOrdersByEmail: method({
-      GET: [getOrdersByEmail],
+      GET: [validateInternalUserAuth, getOrdersByEmail],
     }),
     getOrderFormDetails: method({
-      GET: [getOrderFormDetails],
-    })
+      GET: [validateInternalUserAuth, getOrderFormDetails],
+    }),
+
   },
 })

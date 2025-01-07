@@ -76,13 +76,19 @@ export class CommerceClient extends ExternalClient {
    * Sends the abandoned cart notification to the Commerce backend.
    *
    * @param data - The data to be sent.
+   * @param token - Authorization token for the request.
    * @returns The response from the Commerce backend.
    */
-  public async sendAbandonedCartNotification(data: any): Promise<any> {
-    const headers = {
-      'Content-Type': 'application/json',
-    }
-
-    return this.http.post('/webhook/vtex/abandoned-cart/api/notification/', data, { headers })
+  public async sendAbandonedCartNotification(data: any, token: string): Promise<any> {
+    const url = '/webhook/vtex/abandoned-cart/api/notification/'
+    return this.http.post(
+      url,
+      data,
+      {
+        headers: {
+          Authorization: `${token}`,
+        },
+      }
+    )
   }
 }

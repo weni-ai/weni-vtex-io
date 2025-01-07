@@ -41,7 +41,7 @@ export class IntegrationEngineClient extends ExternalClient {
 
         return this.http.post(url, payload, {
             headers: {
-                Authorization: authToken,
+                Authorization: `${authToken}`,
             },
         })
     }

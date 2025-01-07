@@ -15,16 +15,20 @@ export async function proxyAbandonedCartNotification(ctx: ServiceContext<Clients
     const requestBody = await json(ctx.req)
 
     // Validate that required fields are present
-    const { action, account, homePhone, cart_url, data } = requestBody
-    if (!action || !account || !homePhone || !cart_url || !data) {
+    const { cart_id, account } = requestBody
+    if (!cart_id || !account) {
       ctx.status = 400
-      ctx.body = { message: 'Missing required fields in request body' }
+      ctx.body = { message: 'Missing required fields in request body', body: requestBody }
       return
     }
 
+    // Get authentication token using InternalWeniAuthClient
+    const authClient = ctx.clients.internalWeniAuthClient
+    const headers = await authClient.getAuthHeaders()
+
     // Forward the request body to the Commerce backend via the client
     const commerceClient = ctx.clients.commerceClient
-    const response = await commerceClient.sendAbandonedCartNotification(requestBody)
+    const response = await commerceClient.sendAbandonedCartNotification(requestBody, headers.Authorization)
 
     // Ensure status is a valid number and set the response accordingly
     ctx.status = typeof response?.status === 'number' ? response.status : 200
