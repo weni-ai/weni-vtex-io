@@ -27,6 +27,7 @@ const client = jwksClient({
  * Fetches the public key from the JWKS endpoint.
  * @param header - JWT header containing the key ID.
  * @returns Public key as a string.
+ * @throws Error if the public key cannot be retrieved.
  */
 const getKey = async (header: jwt.JwtHeader): Promise<string> => {
     const key = await promisify(client.getSigningKey)(header.kid)
@@ -46,8 +47,9 @@ const getKey = async (header: jwt.JwtHeader): Promise<string> => {
  * Fetches additional user details from the Keycloak userinfo endpoint.
  * @param accessToken - The access token to authenticate the request.
  * @returns User information object.
+ * @throws Error if the request to the userinfo endpoint fails.
  */
-const fetchUserInfo = async (accessToken: string) => {
+const fetchUserInfo = async (accessToken: string): Promise<any> => {
     const response = await axios.get(OIDC_OP_USERINFO_ENDPOINT, {
         headers: { Authorization: `Bearer ${accessToken}` },
     })
@@ -57,7 +59,7 @@ const fetchUserInfo = async (accessToken: string) => {
 /**
  * Middleware to validate internal user authentication.
  * @param ctx - The service context.
- * @param next - Next middleware function.
+ * @param next - The next middleware function to execute.
  */
 export async function validateInternalUserAuth(ctx: ServiceContext, next: () => Promise<void>) {
     const token = ctx.query.token as string
@@ -72,7 +74,22 @@ export async function validateInternalUserAuth(ctx: ServiceContext, next: () => 
     try {
         // Check if the token is cached
         if (tokenCache.has(token)) {
-            await next()
+            // Try-catch block for the next middleware
+            try {
+                await next()
+            } catch (error) {
+                console.error('Error in next middleware (cached token):', {
+                    message: error.message,
+                    stack: error.stack,
+                    response: error.response?.data || 'No response data',
+                })
+                ctx.status = 500
+                ctx.body = {
+                    message: 'Internal server error in the next middleware.',
+                    error: error.message,
+                    details: error.response?.data || 'No additional details',
+                }
+            }
             return
         }
 
@@ -98,12 +115,36 @@ export async function validateInternalUserAuth(ctx: ServiceContext, next: () => 
 
         // Cache the token after successful validation
         tokenCache.set(token, true)
+    } catch (error) {
+        console.error('JWT validation error:', {
+            message: error.message,
+            stack: error.stack,
+            response: error.response?.data || 'No response data',
+        })
+        ctx.status = 401
+        ctx.body = {
+            message: 'Invalid token.',
+            error: error.message,
+            details: error.response?.data || 'No additional details',
+        }
+        return
+    }
 
-        // Proceed to the next middleware
+    // Try-catch block for the next middleware
+    try {
+        console.log('Proceeding to the next middleware...')
         await next()
     } catch (error) {
-        console.error('JWT validation error:', error.message)
-        ctx.status = 401
-        ctx.body = { message: 'Invalid token.', error: error.message }
+        console.error('Error in next middleware:', {
+            message: error.message,
+            stack: error.stack,
+            response: error.response?.data || 'No response data',
+        })
+        ctx.status = 500
+        ctx.body = {
+            message: 'Internal server error in the next middleware.',
+            error: error.message,
+            details: error.response?.data || 'No additional details',
+        }
     }
 }
