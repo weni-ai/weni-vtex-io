@@ -32,7 +32,7 @@ export class EngageClient extends ExternalClient {
         const url = '/v2/commerce/'
         return this.http.post(url, data, {
             headers: {
-                Authorization: token,
+                Authorization: `${token}`,
             },
         })
     }

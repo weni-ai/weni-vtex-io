@@ -32,7 +32,7 @@ export class AgentBuilderClient extends ExternalClient {
         return this.http.post(
             url, data, {
             headers: {
-                Authorization: token
+                Authorization: `${token}`
             },
             
         })

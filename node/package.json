@@ -4,7 +4,10 @@
     "ramda": "^0.25.0",
     "node-fetch": "^2.6.7",
     "axios": "^0.21.1",
-    "@vtex/clients": "^2.21.0"
+    "@vtex/clients": "^2.21.0",
+    "jsonwebtoken": "^8.5.1",
+    "jwks-rsa": "^3.1.0",
+    "node-cache": "^5.1.2"
   },
   "devDependencies": {
     "@types/co-body": "^0.0.3",
@@ -14,7 +17,10 @@
     "@vtex/api": "6.48.0",
     "@vtex/test-tools": "^1.0.0",
     "@vtex/tsconfig": "^0.5.6",
-    "typescript": "3.9.7"
+    "typescript": "3.9.7",
+    "@types/jsonwebtoken": "^8.5.4",
+    "jwks-rsa": "^3.1.0",
+    "node-cache": "^5.1.2"
   },
   "resolutions": {
     "@types/testing-library__dom": "6.12.1",
