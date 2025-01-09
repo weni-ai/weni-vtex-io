@@ -20,7 +20,7 @@ export class InternalWeniAuthClient extends ExternalClient {
         'Content-Type': 'application/x-www-form-urlencoded',
         ...(options?.headers ?? {}),
       },
-      timeout: options?.timeout ?? 10000, // Default timeout set to 10 seconds
+      timeout: options?.timeout ?? 60000, // Default timeout set to 60 seconds
     })
   }
 
