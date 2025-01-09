@@ -15,10 +15,10 @@ export async function proxyAbandonedCartNotification(ctx: ServiceContext<Clients
     const requestBody = await json(ctx.req)
 
     // Validate that required fields are present
-    const { cart_id, account } = requestBody
-    if (!cart_id || !account) {
+    const { cart_id, account, phone, store } = requestBody
+    if (!cart_id || !account || !phone || !store) {
       ctx.status = 400
-      ctx.body = { message: 'Missing required fields in request body', body: requestBody }
+      ctx.body = { message: 'Missing required fields in request body - required: cart_id, account, phone, store', body: requestBody }
       return
     }
 
