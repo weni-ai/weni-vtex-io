@@ -17,7 +17,7 @@ export class CommerceClient extends ExternalClient {
         ...(options?.headers ?? {}),
         'Content-Type': 'application/json',
       },
-      timeout: 15000,
+      timeout: 60000,
     })
   }
 
@@ -48,12 +48,18 @@ export class CommerceClient extends ExternalClient {
    *
    * @param featureUUID - The unique identifier of the feature to be integrated.
    * @param projectUUID - The unique identifier of the project.
+   * @param store - The store URL for the feature integration.
+   * @param flowsChannelUUID - The UUID of the flows channel for integration.
+   * @param wppCloudAppUUID - The UUID of the WhatsApp Cloud App for the integration.
    * @param token - Authorization token for internal communication.
    * @returns Promise resolving to the result of the integration operation.
    */
   public async integrateFeature(
     featureUUID: string,
     projectUUID: string,
+    store: string,
+    flowsChannelUUID: string,
+    wppCloudAppUUID: string,
     token: string
   ): Promise<any> {
     const url = `/v2/feature/${featureUUID}/integrate/`
@@ -63,6 +69,9 @@ export class CommerceClient extends ExternalClient {
       {
         project_uuid: projectUUID,
         created_by_vtex: true,
+        store,
+        flows_channel_uuid: flowsChannelUUID,
+        wpp_cloud_app_uuid: wppCloudAppUUID,
       },
       {
         headers: {

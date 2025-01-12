@@ -17,7 +17,7 @@ export class EngageClient extends ExternalClient {
                 'Content-Type': 'application/json',
                 ...(options?.headers ?? {}),
             },
-            timeout: options?.timeout ?? 10000,
+            timeout: options?.timeout ?? 60000,
         })
     }
 
