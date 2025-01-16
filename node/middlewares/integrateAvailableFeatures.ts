@@ -10,13 +10,13 @@ import { json } from 'co-body'
  * @param next - Function to proceed to the next middleware.
  */
 export async function integrateAvailableFeatures(ctx: ServiceContext<Clients>, next: () => Promise<any>) {
-  const { projectUUID } = await json(ctx.req)
+  const { project_uuid, store, flows_channel_uuid, wpp_cloud_app_uuid } = await json(ctx.req)
   const commerceClient = ctx.clients.commerceClient
 
-  // Validate that projectUUID is provided
-  if (!projectUUID) {
+  // Validate that all required fields are provided
+  if (!project_uuid || !store || !flows_channel_uuid || !wpp_cloud_app_uuid) {
     ctx.status = 400
-    ctx.body = { message: 'Project UUID is required' }
+    ctx.body = { message: 'Missing required fields: project_uuid, store, flows_channel_uuid, or wpp_cloud_app_uuid' }
     return
   }
 
@@ -31,7 +31,7 @@ export async function integrateAvailableFeatures(ctx: ServiceContext<Clients>, n
       can_vtex_integrate: 'true',
     },
     headers.Authorization,
-    projectUUID
+    project_uuid
   )
 
   // Check if there are no features available for integration
@@ -43,13 +43,16 @@ export async function integrateAvailableFeatures(ctx: ServiceContext<Clients>, n
 
   // Iterate over each feature and integrate it with the specified project
   for (const feature of featureList.results) {
-    const integrationResult = await commerceClient.integrateFeature(
+    await commerceClient.integrateFeature(
       feature.feature_uuid,
-      projectUUID,
+      project_uuid,
+      store,
+      flows_channel_uuid,
+      wpp_cloud_app_uuid,
       headers.Authorization
     )
 
-    console.log(`Integration result for feature ${feature.feature_uuid}:`, integrationResult)
+    console.log(`Integration result for feature ${feature.feature_uuid}:`)
   }
 
   // Set successful response message

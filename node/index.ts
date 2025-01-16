@@ -13,7 +13,7 @@ import { validateInternalUserAuth } from './middlewares/validateInternalUserAuth
 
 
 // Setting cache duration in milliseconds and creating an LRUCache instance
-const TIMEOUT_MS = 15000
+const TIMEOUT_MS = 60000
 
 const cache = new LRUCache<string, any>({ max: 5000 })
 metrics.trackCache('status', cache) // Tracking cache for monitoring
@@ -23,7 +23,7 @@ const clients: ClientsConfig<Clients> = {
   implementation: Clients,
   options: {
     default: {
-      retries: 2,
+      retries: 0,
       timeout: TIMEOUT_MS,
     },
     commerceClient: {

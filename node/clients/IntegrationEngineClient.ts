@@ -17,7 +17,7 @@ export class IntegrationEngineClient extends ExternalClient {
                 ...(options?.headers ?? {}),
                 'Content-Type': 'application/json',
             },
-            timeout: 15000,
+            timeout: 60000,
         })
     }
 
