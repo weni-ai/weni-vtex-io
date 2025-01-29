@@ -3,8 +3,7 @@ import { Clients } from '../clients'
 import { json } from 'co-body'
 
 /**
- * Middleware to integrate available features for a specific project with VTEX.
- * Retrieves a list of features and integrates each feature if available.
+ * Middleware to integrate all available features for a project.
  * 
  * @param ctx - VTEX IO context object.
  * @param next - Function to proceed to the next middleware.
@@ -41,10 +40,13 @@ export async function integrateAvailableFeatures(ctx: ServiceContext<Clients>, n
     return
   }
 
-  // Iterate over each feature and integrate it with the specified project
-  for (const feature of featureList.results) {
+  // Extract only feature UUIDs for integration
+  const featureUUIDs = featureList.results.map((feature: any) => feature.feature_uuid)
+
+  // Iterate over each feature UUID and integrate
+  for (const featureUUID of featureUUIDs) {
     await commerceClient.integrateFeature(
-      feature.feature_uuid,
+      featureUUID,
       project_uuid,
       store,
       flows_channel_uuid,
@@ -52,7 +54,7 @@ export async function integrateAvailableFeatures(ctx: ServiceContext<Clients>, n
       headers.Authorization
     )
 
-    console.log(`Integration result for feature ${feature.feature_uuid}:`)
+    console.log(`Integrated feature: ${featureUUID}`)
   }
 
   // Set successful response message
