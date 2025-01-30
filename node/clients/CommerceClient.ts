@@ -44,22 +44,16 @@ export class CommerceClient extends ExternalClient {
   }
 
   /**
-   * Integrates a feature with a specified project.
+   * Integrates a feature with a specified project, allowing dynamic fields.
    *
    * @param featureUUID - The unique identifier of the feature to be integrated.
-   * @param projectUUID - The unique identifier of the project.
-   * @param store - The store URL for the feature integration.
-   * @param flowsChannelUUID - The UUID of the flows channel for integration.
-   * @param wppCloudAppUUID - The UUID of the WhatsApp Cloud App for the integration.
+   * @param integrationData - An object containing required and dynamic integration fields.
    * @param token - Authorization token for internal communication.
    * @returns Promise resolving to the result of the integration operation.
    */
   public async integrateFeature(
     featureUUID: string,
-    projectUUID: string,
-    store: string,
-    flowsChannelUUID: string,
-    wppCloudAppUUID: string,
+    integrationData: Record<string, any>, // Accepts dynamic fields
     token: string
   ): Promise<any> {
     const url = `/v2/feature/${featureUUID}/integrate/`
@@ -67,11 +61,8 @@ export class CommerceClient extends ExternalClient {
     return this.http.post(
       url,
       {
-        project_uuid: projectUUID,
         created_by_vtex: true,
-        store,
-        flows_channel_uuid: flowsChannelUUID,
-        wpp_cloud_app_uuid: wppCloudAppUUID,
+        ...integrationData, // Pass all fields dynamically
       },
       {
         headers: {

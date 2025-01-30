@@ -9,13 +9,17 @@ import { json } from 'co-body'
  * @param next - Function to proceed to the next middleware.
  */
 export async function integrateAvailableFeatures(ctx: ServiceContext<Clients>, next: () => Promise<any>) {
-  const { project_uuid, store, flows_channel_uuid, wpp_cloud_app_uuid } = await json(ctx.req)
+  // Parse request body
+  const requestBody = await json(ctx.req)
+
+  // Extract required fields
+  const { project_uuid, flows_channel_uuid, wpp_cloud_app_uuid, ...dynamicFields } = requestBody
   const commerceClient = ctx.clients.commerceClient
 
-  // Validate that all required fields are provided
-  if (!project_uuid || !store || !flows_channel_uuid || !wpp_cloud_app_uuid) {
+  // Validate required fields
+  if (!project_uuid || !flows_channel_uuid || !wpp_cloud_app_uuid) {
     ctx.status = 400
-    ctx.body = { message: 'Missing required fields: project_uuid, store, flows_channel_uuid, or wpp_cloud_app_uuid' }
+    ctx.body = { message: 'Missing required fields: project_uuid, flows_channel_uuid, or wpp_cloud_app_uuid' }
     return
   }
 
@@ -40,21 +44,22 @@ export async function integrateAvailableFeatures(ctx: ServiceContext<Clients>, n
     return
   }
 
-  // Extract only feature UUIDs for integration
-  const featureUUIDs = featureList.results.map((feature: any) => feature.feature_uuid)
-
-  // Iterate over each feature UUID and integrate
-  for (const featureUUID of featureUUIDs) {
-    await commerceClient.integrateFeature(
-      featureUUID,
+  // Iterate over each feature UUID and integrate, passing all dynamic fields
+  for (const feature of featureList.results) {
+    const integrationPayload = {
       project_uuid,
-      store,
       flows_channel_uuid,
       wpp_cloud_app_uuid,
+      ...dynamicFields, // Pass all additional fields dynamically
+    }
+
+    await commerceClient.integrateFeature(
+      feature.feature_uuid,
+      integrationPayload,
       headers.Authorization
     )
 
-    console.log(`Integrated feature: ${featureUUID}`)
+    console.log(`Integrated feature: ${feature.feature_uuid} with payload:`, integrationPayload)
   }
 
   // Set successful response message
