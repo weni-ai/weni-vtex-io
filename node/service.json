@@ -37,6 +37,10 @@
     "getOrderFormDetails": {
       "path": "/_v/order-form-details",
       "public": true
+    },
+    "integrateFeature": {
+      "path": "/_v/integrate-feature",
+      "public": true
     }
   }
 }
