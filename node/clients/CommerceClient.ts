@@ -91,4 +91,29 @@ export class CommerceClient extends ExternalClient {
       }
     )
   }
+
+  /**
+   * Disables a feature integration with a specified project.
+   *
+   * @param projectUUID - The unique identifier of the project.
+   * @param featureUUID - The unique identifier of the feature to be disabled.
+   * @param token - Authorization token for internal communication.
+   * @returns Promise resolving to the result of the disable operation.
+   */
+  public async disableFeature(
+    projectUUID: string,
+    featureUUID: string,
+    token: string
+  ): Promise<any> {
+    const url = `/v2/feature/${featureUUID}/integrate/`
+
+    return this.http.delete(url, {
+      headers: {
+        Authorization: `${token}`,
+      },
+      data: {
+        project_uuid: projectUUID,
+      },
+    })
+  }
 }
