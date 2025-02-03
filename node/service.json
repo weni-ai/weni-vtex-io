@@ -41,6 +41,10 @@
     "integrateFeature": {
       "path": "/_v/integrate-feature",
       "public": true
+    },
+    "disableFeature": {
+      "path": "/_v/disable-feature",
+      "public": true
     }
   }
 }
