@@ -13,13 +13,13 @@ export async function updateFeature(ctx: ServiceContext<Clients>, next: () => Pr
   const requestBody = await json(ctx.req)
 
   // Extract required fields
-  const { project_uuid, flows_channel_uuid, wpp_cloud_app_uuid, feature_uuid, ...dynamicFields } = requestBody
+  const { project_uuid, feature_uuid, ...dynamicFields } = requestBody
   const commerceClient = ctx.clients.commerceClient
 
   // Validate required fields
-  if (!project_uuid || !flows_channel_uuid || !wpp_cloud_app_uuid || !feature_uuid) {
+  if (!project_uuid || !feature_uuid) {
     ctx.status = 400
-    ctx.body = { message: 'Missing required fields: project_uuid, flows_channel_uuid, wpp_cloud_app_uuid, or feature_uuid' }
+    ctx.body = { message: 'Missing required fields: project_uuid or feature_uuid' }
     return
   }
 
@@ -29,8 +29,6 @@ export async function updateFeature(ctx: ServiceContext<Clients>, next: () => Pr
   // Prepare full integration payload
   const integrationPayload = {
     project_uuid,
-    flows_channel_uuid,
-    wpp_cloud_app_uuid,
     ...dynamicFields // Pass all additional fields dynamically
   }
 
