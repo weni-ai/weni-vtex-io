@@ -122,7 +122,7 @@ export class CommerceClient extends ExternalClient {
     integrationData: Record<string, any>, // Accepts dynamic fields
     token: string
   ): Promise<any> {
-    const url = `/v2/feature/${featureUUID}/integrate/`
+    const url = `/v2/integrated_feature/${featureUUID}/config/`
 
     return this.http.put(
       url,
