@@ -12,6 +12,7 @@ import { getOrderFormDetails } from './middlewares/getOrderFormDetails' // Middl
 import { validateInternalUserAuth } from './middlewares/validateInternalUserAuth' // Middleware to validate internal user requests
 import { integrateFeature } from './middlewares/integrateFeature' // Middleware to integrate features
 import { disableFeature } from './middlewares/disableFeature' // Middleware to disable features
+import { updateFeature } from './middlewares/updateFeature'
 
 
 // Setting cache duration in milliseconds and creating an LRUCache instance
@@ -81,6 +82,10 @@ export default new Service({
 
     disableFeature: method({
       DELETE: [validateInternalUserAuth, disableFeature],
+    }),
+
+    updateFeature: method({
+      DELETE: [validateInternalUserAuth, updateFeature],
     }),
 
   },

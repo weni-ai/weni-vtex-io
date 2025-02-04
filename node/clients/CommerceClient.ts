@@ -116,4 +116,22 @@ export class CommerceClient extends ExternalClient {
       },
     })
   }
+
+  public async updateFeature(
+    featureUUID: string,
+    integrationData: Record<string, any>, // Accepts dynamic fields
+    token: string
+  ): Promise<any> {
+    const url = `/v2/feature/${featureUUID}/integrate/`
+
+    return this.http.put(
+      url,
+      integrationData,
+      {
+        headers: {
+          Authorization: `${token}`,
+        },
+      }
+    )
+  }
 }
