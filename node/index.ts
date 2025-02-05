@@ -85,7 +85,7 @@ export default new Service({
     }),
 
     updateFeature: method({
-      DELETE: [validateInternalUserAuth, updateFeature],
+      PUT: [validateInternalUserAuth, updateFeature],
     }),
 
   },

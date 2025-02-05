@@ -29,6 +29,9 @@ export async function updateFeature(ctx: ServiceContext<Clients>, next: () => Pr
   // Prepare full integration payload
   const integrationPayload = {
     project_uuid,
+    config: {
+      ...config
+    },
     ...dynamicFields // Pass all additional fields dynamically
   }
 
@@ -38,8 +41,6 @@ export async function updateFeature(ctx: ServiceContext<Clients>, next: () => Pr
     integrationPayload,
     headers.Authorization
   )
-
-  console.log(`Updated feature: ${feature_uuid} with payload:`, integrationPayload)
 
   ctx.body = { message: `Feature ${feature_uuid} updated successfully`, payload: integrationPayload }
   ctx.status = 200
