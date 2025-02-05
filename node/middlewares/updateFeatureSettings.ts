@@ -8,18 +8,18 @@ import { json } from 'co-body'
  * @param ctx - VTEX IO context object.
  * @param next - Function to proceed to the next middleware.
  */
-export async function updateFeature(ctx: ServiceContext<Clients>, next: () => Promise<any>) {
+export async function updateFeatureSettings(ctx: ServiceContext<Clients>, next: () => Promise<any>) {
   // Parse request body
   const requestBody = await json(ctx.req)
 
   // Extract required fields
-  const { project_uuid, feature_uuid, config, ...dynamicFields } = requestBody
+  const { project_uuid, feature_uuid, integration_settings, ...dynamicFields } = requestBody
   const commerceClient = ctx.clients.commerceClient
 
   // Validate required fields
-  if (!project_uuid || !feature_uuid || !config) {
+  if (!project_uuid || !feature_uuid || !integration_settings) {
     ctx.status = 400
-    ctx.body = { message: 'Missing required fields: project_uuid, feature_uuid or config' }
+    ctx.body = { message: 'Missing required fields: project_uuid, feature_uuid or integration_settings' }
     return
   }
 
@@ -29,14 +29,14 @@ export async function updateFeature(ctx: ServiceContext<Clients>, next: () => Pr
   // Prepare full integration payload
   const integrationPayload = {
     project_uuid,
-    config: {
-      ...config
+    integration_settings: {
+      ...integration_settings
     },
     ...dynamicFields // Pass all additional fields dynamically
   }
 
   // Update the specific feature with all dynamic fields
-  await commerceClient.updateFeature(
+  await commerceClient.updateFeatureSettings(
     feature_uuid,
     integrationPayload,
     headers.Authorization

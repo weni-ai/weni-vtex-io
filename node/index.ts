@@ -12,7 +12,7 @@ import { getOrderFormDetails } from './middlewares/getOrderFormDetails' // Middl
 import { validateInternalUserAuth } from './middlewares/validateInternalUserAuth' // Middleware to validate internal user requests
 import { integrateFeature } from './middlewares/integrateFeature' // Middleware to integrate features
 import { disableFeature } from './middlewares/disableFeature' // Middleware to disable features
-import { updateFeature } from './middlewares/updateFeature' // Middleware to update features
+import { updateFeatureSettings } from './middlewares/updateFeatureSettings' // Middleware to update feature settings
 
 
 // Setting cache duration in milliseconds and creating an LRUCache instance
@@ -85,7 +85,7 @@ export default new Service({
     }),
 
     updateFeature: method({
-      PUT: [validateInternalUserAuth, updateFeature],
+      PUT: [validateInternalUserAuth, updateFeatureSettings],
     }),
 
   },
