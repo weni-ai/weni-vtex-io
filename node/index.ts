@@ -10,6 +10,9 @@ import { createAgentBuilder } from './middlewares/createAgentBuilder' // Middlew
 import { getOrdersByEmail } from './middlewares/getOrdersByEmail' // Middleware to fetch orders by user email
 import { getOrderFormDetails } from './middlewares/getOrderFormDetails' // Middleware to fetch order form details by ID
 import { validateInternalUserAuth } from './middlewares/validateInternalUserAuth' // Middleware to validate internal user requests
+import { integrateFeature } from './middlewares/integrateFeature' // Middleware to integrate features
+import { disableFeature } from './middlewares/disableFeature' // Middleware to disable features
+import { updateFeatureSettings } from './middlewares/updateFeatureSettings' // Middleware to update feature settings
 
 
 // Setting cache duration in milliseconds and creating an LRUCache instance
@@ -71,6 +74,18 @@ export default new Service({
     }),
     getOrderFormDetails: method({
       GET: [validateInternalUserAuth, getOrderFormDetails],
+    }),
+
+    integrateFeature: method({
+      POST: [validateInternalUserAuth, integrateFeature],
+    }),
+
+    disableFeature: method({
+      DELETE: [validateInternalUserAuth, disableFeature],
+    }),
+
+    updateFeatureSettings: method({
+      PUT: [validateInternalUserAuth, updateFeatureSettings],
     }),
 
   },

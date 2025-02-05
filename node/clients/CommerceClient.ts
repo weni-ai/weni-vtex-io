@@ -44,22 +44,16 @@ export class CommerceClient extends ExternalClient {
   }
 
   /**
-   * Integrates a feature with a specified project.
+   * Integrates a feature with a specified project, allowing dynamic fields.
    *
    * @param featureUUID - The unique identifier of the feature to be integrated.
-   * @param projectUUID - The unique identifier of the project.
-   * @param store - The store URL for the feature integration.
-   * @param flowsChannelUUID - The UUID of the flows channel for integration.
-   * @param wppCloudAppUUID - The UUID of the WhatsApp Cloud App for the integration.
+   * @param integrationData - An object containing required and dynamic integration fields.
    * @param token - Authorization token for internal communication.
    * @returns Promise resolving to the result of the integration operation.
    */
   public async integrateFeature(
     featureUUID: string,
-    projectUUID: string,
-    store: string,
-    flowsChannelUUID: string,
-    wppCloudAppUUID: string,
+    integrationData: Record<string, any>, // Accepts dynamic fields
     token: string
   ): Promise<any> {
     const url = `/v2/feature/${featureUUID}/integrate/`
@@ -67,11 +61,8 @@ export class CommerceClient extends ExternalClient {
     return this.http.post(
       url,
       {
-        project_uuid: projectUUID,
         created_by_vtex: true,
-        store,
-        flows_channel_uuid: flowsChannelUUID,
-        wpp_cloud_app_uuid: wppCloudAppUUID,
+        ...integrationData, // Pass all fields dynamically
       },
       {
         headers: {
@@ -93,6 +84,57 @@ export class CommerceClient extends ExternalClient {
     return this.http.post(
       url,
       data,
+      {
+        headers: {
+          Authorization: `${token}`,
+        },
+      }
+    )
+  }
+
+  /**
+   * Disables a feature integration with a specified project.
+   *
+   * @param projectUUID - The unique identifier of the project.
+   * @param featureUUID - The unique identifier of the feature to be disabled.
+   * @param token - Authorization token for internal communication.
+   * @returns Promise resolving to the result of the disable operation.
+   */
+  public async disableFeature(
+    projectUUID: string,
+    featureUUID: string,
+    token: string
+  ): Promise<any> {
+    const url = `/v2/feature/${featureUUID}/integrate/`
+
+    return this.http.delete(url, {
+      headers: {
+        Authorization: `${token}`,
+      },
+      data: {
+        project_uuid: projectUUID,
+      },
+    })
+  }
+
+  /**
+   * Update a feature integration's settings with a specified project.
+   *
+   * @param featureUUID - The unique identifier of the feature to be disabled.
+   * @param token - Authorization token for internal communication.
+   * @param integrationData - An object containing required and dynamic integration fields.
+   * @returns Promise resolving to the result of the disable operation.
+   */
+  public async updateFeatureSettings(
+    featureUUID: string,
+    integrationData: Record<string, any>, // Accepts dynamic fields
+    token: string
+  ): Promise<any> {
+    const url = `/v2/integrated_feature/${featureUUID}/settings/`
+
+    return this.http.put(
+      url,
+      integrationData,
       {
         headers: {
           Authorization: `${token}`,

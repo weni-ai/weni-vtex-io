@@ -37,6 +37,18 @@
     "getOrderFormDetails": {
       "path": "/_v/order-form-details",
       "public": true
+    },
+    "integrateFeature": {
+      "path": "/_v/integrate-feature",
+      "public": true
+    },
+    "disableFeature": {
+      "path": "/_v/disable-feature",
+      "public": true
+    },
+    "updateFeatureSettings": {
+      "path": "/_v/update-feature-settings",
+      "public": true
     }
   }
 }
