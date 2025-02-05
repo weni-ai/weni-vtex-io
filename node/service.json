@@ -46,8 +46,8 @@
       "path": "/_v/disable-feature",
       "public": true
     },
-    "updateFeature": {
-      "path": "/_v/update-feature",
+    "updateFeatureSettings": {
+      "path": "/_v/update-feature-settings",
       "public": true
     }
   }
