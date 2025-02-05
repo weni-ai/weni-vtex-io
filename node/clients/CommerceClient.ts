@@ -116,4 +116,30 @@ export class CommerceClient extends ExternalClient {
       },
     })
   }
+
+  /**
+   * Update a feature integration's settings with a specified project.
+   *
+   * @param featureUUID - The unique identifier of the feature to be disabled.
+   * @param token - Authorization token for internal communication.
+   * @param integrationData - An object containing required and dynamic integration fields.
+   * @returns Promise resolving to the result of the disable operation.
+   */
+  public async updateFeatureSettings(
+    featureUUID: string,
+    integrationData: Record<string, any>, // Accepts dynamic fields
+    token: string
+  ): Promise<any> {
+    const url = `/v2/integrated_feature/${featureUUID}/settings/`
+
+    return this.http.put(
+      url,
+      integrationData,
+      {
+        headers: {
+          Authorization: `${token}`,
+        },
+      }
+    )
+  }
 }
