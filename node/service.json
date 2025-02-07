@@ -55,6 +55,10 @@
     "updateFeatureSettings": {
       "path": "/_v/update-feature-settings",
       "public": true
+    },
+    "getOrderById": {
+      "path": "/_v/order-by-id",
+      "public": true
     }
   }
 }
