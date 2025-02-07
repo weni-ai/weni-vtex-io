@@ -5,6 +5,12 @@
   "minReplicas": 2,
   "maxReplicas": 4,
   "workers": 1,
+  "events": {
+    "allStates": {
+      "sender": "vtex.orders-broadcast",
+      "topics": ["order-status-updated"]
+    }
+  },
   "routes": {
     "getFeatureList": {
       "path": "/_v/get-feature-list",
