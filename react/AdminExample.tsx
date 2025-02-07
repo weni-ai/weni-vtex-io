@@ -22,13 +22,25 @@ window.addEventListener('message', (event: { data: { name: string, id: string, a
     }, '*');
   }
 
-  fetch(...args).then(response => response.json()).then(response => postMessage({
-    status: 'success',
-    response,
-  })).catch(reason => postMessage({
-    status: 'error',
-    reason,
-  }));
+  fetch(...args)
+    .then(response => response.text())
+    .then(responseText => {
+      let response: unknown;
+
+      try {
+        response = JSON.parse(responseText);
+      } catch {
+        response = { text: responseText };
+      }
+
+      postMessage({
+        status: 'success',
+        response,
+      });
+    }).catch(reason => postMessage({
+      status: 'error',
+      reason,
+    }));
 });
 
 function AdminExample() {
