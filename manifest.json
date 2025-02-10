@@ -1,7 +1,7 @@
 {
   "name": "weni-vtex-io",
   "vendor": "wenipartnerbr",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "title": "Weni vtex IO",
   "description": "App for configuring features on weni",
   "dependencies": {

@@ -1,5 +1,7 @@
-import { ExternalClient, InstanceOptions, IOContext } from '@vtex/api'
-import { COMMERCE_API_BASE_URL } from '../env';
+import type { InstanceOptions, IOContext } from '@vtex/api'
+import { ExternalClient } from '@vtex/api'
+
+import { COMMERCE_API_BASE_URL } from '../env'
 
 /**
  * Client for interacting with the Commerce module to fetch and integrate feature details.
@@ -8,9 +10,11 @@ import { COMMERCE_API_BASE_URL } from '../env';
 export class CommerceClient extends ExternalClient {
   constructor(context: IOContext, options?: InstanceOptions) {
     const baseUrl = COMMERCE_API_BASE_URL
+
     if (!baseUrl) {
       throw new Error('COMMERCE_API_BASE_URL is not defined')
     }
+
     super(baseUrl, context, {
       ...options,
       headers: {
@@ -35,6 +39,7 @@ export class CommerceClient extends ExternalClient {
     projectUUID: string
   ): Promise<any> {
     const url = `/v2/feature/${projectUUID}/`
+
     return this.http.get(url, {
       headers: {
         Authorization: `${token}`,
@@ -79,17 +84,17 @@ export class CommerceClient extends ExternalClient {
    * @param token - Authorization token for the request.
    * @returns The response from the Commerce backend.
    */
-  public async sendAbandonedCartNotification(data: any, token: string): Promise<any> {
+  public async sendAbandonedCartNotification(
+    data: any,
+    token: string
+  ): Promise<any> {
     const url = '/webhook/vtex/abandoned-cart/api/notification/'
-    return this.http.post(
-      url,
-      data,
-      {
-        headers: {
-          Authorization: `${token}`,
-        },
-      }
-    )
+
+    return this.http.post(url, data, {
+      headers: {
+        Authorization: `${token}`,
+      },
+    })
   }
 
   /**
@@ -132,14 +137,30 @@ export class CommerceClient extends ExternalClient {
   ): Promise<any> {
     const url = `/v2/integrated_feature/${featureUUID}/settings/`
 
-    return this.http.put(
-      url,
-      integrationData,
-      {
-        headers: {
-          Authorization: `${token}`,
-        },
-      }
-    )
+    return this.http.put(url, integrationData, {
+      headers: {
+        Authorization: `${token}`,
+      },
+    })
+  }
+
+  /**
+   * Sends an order status update notification to the Commerce webhook.
+   *
+   * @param data - The event data, including order status and vtex_account.
+   * @param token - Authentication token for the request.
+   * @returns Promise resolving to the response from the Commerce backend.
+   */
+  public async sendOrderStatusNotification(
+    data: any,
+    token: string
+  ): Promise<any> {
+    const url = '/webhook/vtex/order-status/api/notification/'
+
+    return this.http.post(url, data, {
+      headers: {
+        Authorization: `${token}`,
+      },
+    })
   }
 }
