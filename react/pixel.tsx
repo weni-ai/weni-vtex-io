@@ -1,68 +1,79 @@
-import { canUseDOM } from 'vtex.render-runtime'
+import { canUseDOM } from "vtex.render-runtime";
+import { PixelMessage } from "./typings/events";
 
-import {
-  PixelMessage,
-} from './typings/events'
+declare const __RUNTIME__: {
+  culture: { locale: string };
+  binding?: { id: string };
+  account: string;
+  workspace: string;
+  production: boolean;
+};
 
-export default function() {
-  return null;
-}
+if (typeof __RUNTIME__ !== 'undefined') {
+  console.log('Runtime:', __RUNTIME__);
 
-function getUser(): Promise<{phone: {value: string}}> {
-  return new Promise((resolve) => {
-    fetch('/api/sessions?items=*').then(response => response.json()).then(data => {
-      resolve(data.namespaces.profile);
-    })
-  })
-}
+  const runtime = __RUNTIME__;
+  const timeToCallNextAbandonedCartUpdateInSeconds = 15 * 60; // 15 minutes
+  let seeOrderFormTimeout: number;
 
-const timeToCallNextAbandonedCartUpdateInSeconds = 15 * 60; // 15 minutes
-let seeOrderFormTimeout: number;
+  function getUser(): Promise<{ phone: { value: string } }> {
+    return new Promise((resolve) => {
+      fetch('/api/sessions?items=*')
+        .then((response) => response.json())
+        .then((data) => {
+          resolve(data.namespaces.profile);
+        });
+    });
+  }
 
-function seeOrderForm() {
-  console.log('calling');
-  clearTimeout(seeOrderFormTimeout);
-  
-  fetch('/api/checkout/pub/orderForm')
-    .then(response => response.json())
-    .then(async data => {
-      seeOrderFormTimeout = setTimeout(seeOrderForm, timeToCallNextAbandonedCartUpdateInSeconds * 1E3);
-      
-      let phone = data.clientProfileData?.phone;
-      let user = null;
+  function seeOrderForm() {
+    console.log('calling');
+    clearTimeout(seeOrderFormTimeout);
 
-      if (!phone) {
-        user = await getUser();
-        phone = user.phone?.value;
-      }
+    fetch('/api/checkout/pub/orderForm')
+      .then((response) => response.json())
+      .then(async (data) => {
+        seeOrderFormTimeout = setTimeout(
+          seeOrderForm,
+          timeToCallNextAbandonedCartUpdateInSeconds * 1e3
+        );
 
-      fetch('/_v/updateOrderFormForAbandonedCart', {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          orderFormId: data.orderFormId,
-          itemsLength: data.items.length,
-          itemsStatus: data.items.length === 0 ? 'empty' : 'hasItems',
-          phone,
-        }),
+        let phone = data.clientProfileData?.phone;
+        let user = null;
+
+        if (!phone) {
+          user = await getUser();
+          phone = user.phone?.value;
+        }
+
+        fetch('/_v/updateOrderFormForAbandonedCart', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            orderFormId: data.orderFormId,
+            itemsLength: data.items.length,
+            itemsStatus: data.items.length === 0 ? 'empty' : 'hasItems',
+            phone,
+            binding: runtime.binding?.id, // Passando o binding
+          }),
+        });
       });
-    })
-}
+  }
 
-seeOrderForm();
-
-export function handleEvents(e: PixelMessage) {
-  switch (e.data.eventName) {
-    case 'vtex:addToCart': {
-      seeOrderForm();
-      return;
+  function handleEvents(e: PixelMessage) {
+    switch (e.data.eventName) {
+      case 'vtex:addToCart': {
+        seeOrderForm();
+        return;
+      }
     }
   }
-}
 
-if (canUseDOM) {
-  window.addEventListener('message', handleEvents)
+  if (canUseDOM) {
+    window.addEventListener('message', handleEvents);
+    seeOrderForm(); // Chama a lógica principal
+  }
 }
