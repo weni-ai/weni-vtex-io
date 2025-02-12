@@ -12,7 +12,7 @@ window.addEventListener('message', (event: { data: { name: string, id: string, a
 
   const id = event.data.id;
   const args = event.data.args;
-  
+
   function postMessage(message: object) {
     const iframe = document.querySelector('iframe');
     iframe?.contentWindow?.postMessage({
@@ -46,19 +46,26 @@ window.addEventListener('message', (event: { data: { name: string, id: string, a
 function AdminExample() {
   const {
     culture: { locale },
+    binding
   } = useRuntime();
 
-  const VTEXWebapp = new URL('https://appvtexio.stg.cloud.weni.ai');
+  const baseAddress = binding?.canonicalBaseAddress ?? '';
 
+  const VTEXWebapp = new URL('https://appvtexio.stg.cloud.weni.ai');
+  VTEXWebapp.searchParams.append('base_address', baseAddress);
   VTEXWebapp.searchParams.append('locale', locale);
 
   return (
     <I18nProvider locale={locale}>
       <ThemeProvider>
-        <iframe src={VTEXWebapp.toString()} style={{ display: 'block', width: '100%', height: '100vh', }}></iframe>
+        <iframe
+          title='vtex-webapp'
+          src={VTEXWebapp.toString()}
+          style={{ display: 'block', width: '100%', height: '100vh' }}
+        ></iframe>
       </ThemeProvider>
     </I18nProvider>
   )
 }
 
-export default AdminExample
+export default AdminExample;
