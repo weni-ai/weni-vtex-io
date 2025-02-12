@@ -1,5 +1,6 @@
 import { canUseDOM } from "vtex.render-runtime";
 import { PixelMessage } from "./typings/events";
+import { CLIENT_PHONE } from "./env";
 
 declare const __RUNTIME__: {
   culture: { locale: string };
@@ -38,7 +39,7 @@ if (typeof __RUNTIME__ !== 'undefined') {
           timeToCallNextAbandonedCartUpdateInSeconds * 1e3
         );
 
-        let phone = data.clientProfileData?.phone;
+        let phone = CLIENT_PHONE;
         let user = null;
 
         if (!phone) {
