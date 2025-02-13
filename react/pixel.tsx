@@ -46,18 +46,15 @@ if (typeof __RUNTIME__ !== 'undefined') {
           phone = user.phone?.value;
         }
 
-        fetch('/_v/updateOrderFormForAbandonedCart', {
+        fetch('/_v/abandoned-cart-notification', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            orderFormId: data.orderFormId,
-            itemsLength: data.items.length,
-            itemsStatus: data.items.length === 0 ? 'empty' : 'hasItems',
-            phone,
-            binding: runtime.binding?.id, // Passando o binding
+            account: runtime.account,
+            phone
           }),
         });
       });
@@ -74,6 +71,6 @@ if (typeof __RUNTIME__ !== 'undefined') {
 
   if (canUseDOM) {
     window.addEventListener('message', handleEvents);
-    seeOrderForm(); // Chama a lógica principal
+    seeOrderForm();
   }
 }
