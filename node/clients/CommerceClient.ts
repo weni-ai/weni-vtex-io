@@ -49,6 +49,29 @@ export class CommerceClient extends ExternalClient {
   }
 
   /**
+   * Retrieves available integrated features based on the provided filters.
+   *
+   * @param params - The filter parameters for the request.
+   * @param token - Authorization token for internal communication.
+   * @param projectUUID - The unique identifier of the project.
+   * @returns Promise resolving to the list of integrated features.
+   */
+  public async getIntegratedFeatures(
+    params: { category: string, can_vtex_integrate: string },
+    token: string,
+    projectUUID: string
+  ): Promise<any> {
+    const url = `/v2/app_integrated_feature/${projectUUID}/`
+
+    return this.http.get(url, {
+      headers: {
+        authorization: `${token}`,
+      },
+      params,
+    })
+  }
+
+  /**
    * Integrates a feature with a specified project, allowing dynamic fields.
    *
    * @param featureUUID - The unique identifier of the feature to be integrated.
