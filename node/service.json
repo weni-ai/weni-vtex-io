@@ -59,6 +59,10 @@
     "getOrderById": {
       "path": "/_v/order-by-id",
       "public": true
+    },
+    "getIntegratedFeatures": {
+      "path": "/_v/get-integrated-features",
+      "public": true
     }
   }
 }
