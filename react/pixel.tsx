@@ -26,20 +26,17 @@ if (typeof __RUNTIME__ !== 'undefined') {
     });
   }
 
-  function seeOrderForm() {
-    console.log('calling');
-    clearTimeout(seeOrderFormTimeout);
+function seeOrderForm() {
+  console.log('calling');
+  clearTimeout(seeOrderFormTimeout);
 
-    fetch('/api/checkout/pub/orderForm')
-      .then((response) => response.json())
-      .then(async (data) => {
-        seeOrderFormTimeout = setTimeout(
-          seeOrderForm,
-          timeToCallNextAbandonedCartUpdateInSeconds * 1e3
-        );
+  fetch('/api/checkout/pub/orderForm')
+    .then(response => response.json())
+    .then(async data => {
+      seeOrderFormTimeout = setTimeout(seeOrderForm, timeToCallNextAbandonedCartUpdateInSeconds * 1E3);
 
-        let phone = data.clientProfileData?.phone;
-        let user = null;
+      let phone = data.clientProfileData?.phone;
+      let user = null;
 
         if (!phone) {
           user = await getUser();

@@ -22,6 +22,7 @@ import { disableFeature } from './middlewares/disableFeature' // Middleware to d
 import { updateFeatureSettings } from './middlewares/updateFeatureSettings' // Middleware to update feature settings
 import { allStates } from './middlewares/allStates' // Middleware to receive order status updates
 import { getOrderById } from './middlewares/getOrderById'
+import { getIntegratedFeaturesList } from './middlewares/getIntegratedFeatures'
 
 // Setting cache duration in milliseconds and creating an LRUCache instance
 const TIMEOUT_MS = 60000
@@ -114,5 +115,8 @@ export default new Service({
     getOrderById: method({
       GET: [validateInternalUserAuth, getOrderById],
     }),
+    getIntegratedFeatures: method({
+      GET: [validateInternalUserAuth, getIntegratedFeaturesList]
+    })
   },
 })
