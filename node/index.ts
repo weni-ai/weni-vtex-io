@@ -16,13 +16,13 @@ import { proxyWhatsAppIntegration } from './middlewares/proxyWhatsAppIntegration
 import { createAgentBuilder } from './middlewares/createAgentBuilder' // Middleware to configure AgentBuilder
 import { getOrdersByEmail } from './middlewares/getOrdersByEmail' // Middleware to fetch orders by user email
 import { getOrderFormDetails } from './middlewares/getOrderFormDetails' // Middleware to fetch order form details by ID
-import { validateInternalUserAuth } from './middlewares/validateInternalUserAuth' // Middleware to validate internal user requests
 import { integrateFeature } from './middlewares/integrateFeature' // Middleware to integrate features
 import { disableFeature } from './middlewares/disableFeature' // Middleware to disable features
 import { updateFeatureSettings } from './middlewares/updateFeatureSettings' // Middleware to update feature settings
 import { allStates } from './middlewares/allStates' // Middleware to receive order status updates
-import { getOrderById } from './middlewares/getOrderById'
-import { getIntegratedFeaturesList } from './middlewares/getIntegratedFeatures'
+import { getOrderById } from './middlewares/getOrderById' // Middleware to fetch order by ID
+import { getIntegratedFeaturesList } from './middlewares/getIntegratedFeatures' // Middleware to fetch integrated features list
+import { validateVtexInternalRequest } from './middlewares/validateVtexInternalRequest' // Middleware to validate VTEX internal request
 
 // Setting cache duration in milliseconds and creating an LRUCache instance
 const TIMEOUT_MS = 60000
@@ -76,47 +76,47 @@ export default new Service({
   },
   routes: {
     getFeatureList: method({
-      GET: [validateInternalUserAuth, getFeatureList],
+      GET: [validateVtexInternalRequest, getFeatureList],
     }),
     integrateAvailableFeatures: method({
-      POST: [validateInternalUserAuth, integrateAvailableFeatures],
+      POST: [validateVtexInternalRequest, integrateAvailableFeatures],
     }),
     proxyAbandonedCartNotification: method({
-      POST: [validateInternalUserAuth, proxyAbandonedCartNotification],
+      POST: [validateVtexInternalRequest, proxyAbandonedCartNotification],
     }),
     createUserAndProject: method({
-      POST: [validateInternalUserAuth, createUserAndProject],
+      POST: [validateVtexInternalRequest, createUserAndProject],
     }),
     proxyWhatsAppIntegration: method({
-      POST: [validateInternalUserAuth, proxyWhatsAppIntegration],
+      POST: [validateVtexInternalRequest, proxyWhatsAppIntegration],
     }),
     createAgentBuilder: method({
-      POST: [validateInternalUserAuth, createAgentBuilder],
+      POST: [validateVtexInternalRequest, createAgentBuilder],
     }),
     getOrdersByEmail: method({
-      GET: [validateInternalUserAuth, getOrdersByEmail],
+      GET: [validateVtexInternalRequest, getOrdersByEmail],
     }),
     getOrderFormDetails: method({
-      GET: [validateInternalUserAuth, getOrderFormDetails],
+      GET: [validateVtexInternalRequest, getOrderFormDetails],
     }),
 
     integrateFeature: method({
-      POST: [validateInternalUserAuth, integrateFeature],
+      POST: [validateVtexInternalRequest, integrateFeature],
     }),
 
     disableFeature: method({
-      DELETE: [validateInternalUserAuth, disableFeature],
+      DELETE: [validateVtexInternalRequest, disableFeature],
     }),
 
     updateFeatureSettings: method({
-      PUT: [validateInternalUserAuth, updateFeatureSettings],
+      PUT: [validateVtexInternalRequest, updateFeatureSettings],
     }),
 
     getOrderById: method({
-      GET: [validateInternalUserAuth, getOrderById],
+      GET: [validateVtexInternalRequest, getOrderById],
     }),
     getIntegratedFeatures: method({
-      GET: [validateInternalUserAuth, getIntegratedFeaturesList]
-    })
+      GET: [validateVtexInternalRequest, getIntegratedFeaturesList],
+    }),
   },
 })
