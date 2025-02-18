@@ -1,4 +1,5 @@
 import { IOClients } from '@vtex/api'
+
 import { CommerceClient } from './CommerceClient'
 import { InternalWeniAuthClient } from './InternalWeniAuthClient'
 import { EngageClient } from './EngageClient'
@@ -6,7 +7,6 @@ import { IntegrationEngineClient } from './IntegrationEngineClient'
 import { AgentBuilderClient } from './AgentBuilderClient'
 import { OmsClient } from './OmsClient'
 import { OrderFormClient } from './OrderFormClient'
-
 
 export class Clients extends IOClients {
   public get commerceClient() {
