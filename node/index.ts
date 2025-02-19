@@ -23,6 +23,9 @@ import { allStates } from './middlewares/allStates' // Middleware to receive ord
 import { getOrderById } from './middlewares/getOrderById' // Middleware to fetch order by ID
 import { getIntegratedFeaturesList } from './middlewares/getIntegratedFeatures' // Middleware to fetch integrated features list
 import { validateVtexInternalRequest } from './middlewares/validateVtexInternalRequest' // Middleware to validate VTEX internal request
+import { checkWhatsAppIntegration } from './middlewares/checkWhatAppIntegration' // Middleware to check WhatsApp integration
+import { checkProjectByUser } from './middlewares/checkProjectByUser' // Middleware to check project by user
+import { checkAgentBuilder } from './middlewares/checkAgentBuilder' // Middleware to check agent builder
 
 // Setting cache duration in milliseconds and creating an LRUCache instance
 const TIMEOUT_MS = 60000
@@ -117,6 +120,18 @@ export default new Service({
     }),
     getIntegratedFeatures: method({
       GET: [validateVtexInternalRequest, getIntegratedFeaturesList],
+    }),
+
+    checkWhatsAppIntegration: method({
+      GET: [validateVtexInternalRequest, checkWhatsAppIntegration],
+    }),
+
+    checkProjectByUser: method({
+      GET: [validateVtexInternalRequest, checkProjectByUser],
+    }),
+
+    checkAgentBuilder: method({
+      GET: [validateVtexInternalRequest, checkAgentBuilder],
     }),
   },
 })
