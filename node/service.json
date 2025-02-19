@@ -63,6 +63,18 @@
     "getIntegratedFeatures": {
       "path": "/_v/get-integrated-features",
       "public": true
+    },
+    "checkWhatsAppIntegration": {
+      "path": "/_v/check-whatsapp-integration",
+      "public": true
+    },
+    "checkProjectByUser": {
+      "path": "/_v/check-project-by-user",
+      "public": true
+    },
+    "checkAgentBuilder": {
+      "path": "/_v/check-agent-builder",
+      "public": true
     }
   }
 }
