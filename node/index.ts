@@ -26,6 +26,7 @@ import { validateVtexInternalRequest } from './middlewares/validateVtexInternalR
 import { checkWhatsAppIntegration } from './middlewares/checkWhatAppIntegration' // Middleware to check WhatsApp integration
 import { checkProjectByUser } from './middlewares/checkProjectByUser' // Middleware to check project by user
 import { checkAgentBuilder } from './middlewares/checkAgentBuilder' // Middleware to check agent builder
+import { validateInternalUserAuth } from './middlewares/validateInternalUserAuth' // Middleware to validate internal user authentication
 
 // Setting cache duration in milliseconds and creating an LRUCache instance
 const TIMEOUT_MS = 60000
@@ -97,10 +98,10 @@ export default new Service({
       POST: [validateVtexInternalRequest, createAgentBuilder],
     }),
     getOrdersByEmail: method({
-      GET: [validateVtexInternalRequest, getOrdersByEmail],
+      GET: [validateInternalUserAuth, getOrdersByEmail],
     }),
     getOrderFormDetails: method({
-      GET: [validateVtexInternalRequest, getOrderFormDetails],
+      GET: [validateInternalUserAuth, getOrderFormDetails],
     }),
 
     integrateFeature: method({
@@ -116,7 +117,7 @@ export default new Service({
     }),
 
     getOrderById: method({
-      GET: [validateVtexInternalRequest, getOrderById],
+      GET: [validateInternalUserAuth, getOrderById],
     }),
     getIntegratedFeatures: method({
       GET: [validateVtexInternalRequest, getIntegratedFeaturesList],
