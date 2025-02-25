@@ -25,7 +25,8 @@ export async function getSkillMetrics(ctx: ServiceContext<Clients>, next: () => 
     String(skill),
     headers.Authorization,
     {
-      ...ctx.query
+      start_date: ctx.query.start_date,
+      end_date: ctx.query.end_date,
     }
   )
 
