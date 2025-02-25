@@ -13,7 +13,7 @@ export async function getSkillMetrics(ctx: ServiceContext<Clients>, next: () => 
 
   if (!projectUUID || !skill) {
     ctx.status = 400
-    ctx.body = { message: 'Missing required fields: projectUUID or skill' }
+    ctx.body = { message: 'Missing required fields: projectUUID and/or skill are required.' }
     return
   }
 
