@@ -75,6 +75,10 @@
     "checkAgentBuilder": {
       "path": "/_v/check-agent-builder",
       "public": true
+    },
+    "getSkillMetrics": {
+      "path": "/_v/get-skill-metrics",
+      "public": true
     }
   }
 }
