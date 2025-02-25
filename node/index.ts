@@ -27,6 +27,7 @@ import { checkWhatsAppIntegration } from './middlewares/checkWhatAppIntegration'
 import { checkProjectByUser } from './middlewares/checkProjectByUser' // Middleware to check project by user
 import { checkAgentBuilder } from './middlewares/checkAgentBuilder' // Middleware to check agent builder
 import { validateInternalUserAuth } from './middlewares/validateInternalUserAuth' // Middleware to validate internal user authentication
+import { getSkillMetrics } from './middlewares/getSkillMetrics'
 
 // Setting cache duration in milliseconds and creating an LRUCache instance
 const TIMEOUT_MS = 60000
@@ -133,6 +134,10 @@ export default new Service({
 
     checkAgentBuilder: method({
       GET: [validateVtexInternalRequest, checkAgentBuilder],
+    }),
+
+    getSkillMetrics: method({
+      GET: [validateVtexInternalRequest, getSkillMetrics],
     }),
   },
 })
