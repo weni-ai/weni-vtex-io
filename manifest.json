@@ -116,6 +116,13 @@
       }
     },
     {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "insights-engine.weni.ai",
+        "path": "*"
+      }
+    },
+    {
       "name": "colossus-fire-event"
     },
     {
