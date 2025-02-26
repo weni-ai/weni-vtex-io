@@ -20,17 +20,24 @@ export async function getSkillMetrics(ctx: ServiceContext<Clients>, next: () => 
   const authClient = ctx.clients.internalWeniAuthClient
   const headers = await authClient.getAuthHeaders()
 
-  const response = await insightsClient.getSkillMetrics(
-    String(projectUUID),
-    String(skill),
-    headers.Authorization,
-    {
-      start_date: ctx.query.start_date,
-      end_date: ctx.query.end_date,
-    }
-  )
+  try {
+    const response = await insightsClient.getSkillMetrics(
+      String(projectUUID),
+      String(skill),
+      headers.Authorization,
+      {
+        start_date: ctx.query.start_date,
+        end_date: ctx.query.end_date,
+      }
+    )
 
-  ctx.body = response
-  ctx.status = 200
+    ctx.body = response
+    ctx.status = 200
+  } catch (error) {
+    ctx.status = (error as any).response?.status || 500
+    ctx.body = (error as any).response?.data || 'An error occurred while fetching skill metrics'
+    return
+  }
+
   await next()
 }
