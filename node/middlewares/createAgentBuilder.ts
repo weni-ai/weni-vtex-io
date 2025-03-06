@@ -34,16 +34,19 @@ export async function createAgentBuilder(ctx: ServiceContext<Clients>, next: () 
         "role": agent.occupation,
         "personality": "Amigável"
     }
+    console.log(final_agent)
     // Setting the body for request to nexus module
     const body = {
         "agent": final_agent,
         "links": links
     }
+    console.log(body)
     const response = await agentBuilderClient.createAgentBuilder(
         body,
         headers.Authorization,
         projectUUIDString,
     );
+    console.log(response)
     // Checking response have success
     if (response.results) {
         ctx.body = { message: "Agent builder created: ", response };
