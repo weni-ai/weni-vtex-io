@@ -34,6 +34,7 @@ export async function createAgentBuilder(ctx: ServiceContext<Clients>, next: () 
         "role": agent.occupation,
         "personality": "Amigável"
     }
+    console.log("links: " + links)
     console.log(final_agent)
     // Setting the body for request to nexus module
     const body = {
