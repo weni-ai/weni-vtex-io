@@ -16,15 +16,20 @@ export async function getOrdersByEmail(ctx: ServiceContext<Clients>, next: () =>
       return
     }
 
+    const queryParams = {
+      'q': email,
+      'orderBy': 'creationDate,desc',
+    }
+
     const client = ctx.clients.omsClient
-    const response = await client.getOrdersByEmail(email)
+    const response = await client.getOrders(queryParams)
 
     ctx.status = 200
     ctx.body = response
   } catch (error) {
-    console.error('Error fetching orders by email:', error)
-    ctx.status = 500
-    ctx.body = { message: 'Failed to fetch orders by email.', error: error.message }
+    console.error('Error fetching orders by email:', error, ctx.query)
+    ctx.status = (error as any).response?.status || 500
+    ctx.body = (error as any).response?.data || 'An error occurred while fetching orders by email'
   }
 
   await next()
