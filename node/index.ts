@@ -142,7 +142,7 @@ export default new Service({
     }),
 
     getOrders: method({
-      GET: [validateVtexInternalRequest, getOrders],
+      GET: [validateInternalUserAuth, getOrders],
     }),
   },
 })
