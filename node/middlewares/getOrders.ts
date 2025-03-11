@@ -3,10 +3,10 @@ import { ServiceContext } from "@vtex/api";
 
 export async function getOrders(ctx: ServiceContext<Clients>, next: () => Promise<any>) {
   try {
-    const { token, ...queryParams } = ctx.query
+    delete ctx.query.token
     const client = ctx.clients.omsClient
 
-    const response = await client.getOrders(queryParams)
+    const response = await client.getOrders(ctx.query)
 
     ctx.status = 200
     ctx.body = response
