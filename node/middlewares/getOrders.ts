@@ -18,7 +18,7 @@ export async function getOrders(ctx: ServiceContext<Clients>, next: () => Promis
     ctx.status = 200
     ctx.body = response
   } catch (error) {
-    console.error('Error fetching orders:', error)
+    console.error('Error fetching orders:', error, ctx.query)
     ctx.status = (error as any).response?.status || 500
     ctx.body = (error as any).response?.data || 'An error occurred while fetching orders'
   }
