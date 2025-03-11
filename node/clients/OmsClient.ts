@@ -19,7 +19,7 @@ export class OmsClient extends JanusClient {
    * Fetch orders by email.
    * @param userEmail - Email of the user.
    */
-  public async getOrders(userEmail: string): Promise<any> {
+  public async getOrdersByEmail(userEmail: string): Promise<any> {
     return this.http.get(
       `/api/oms/pvt/orders?q=${userEmail}&orderBy=creationDate,desc`
     )
@@ -31,5 +31,13 @@ export class OmsClient extends JanusClient {
    */
   public async getOrderById(orderId: string): Promise<any> {
     return this.http.get(`/api/oms/pvt/orders/${orderId}`)
+  }
+
+  /**
+   * Fetch orders by query parameters.
+   * @param queryParams - Query parameters.
+   */
+  public async getOrders(queryParams: any): Promise<any> {
+    return this.http.get(`/api/oms/pvt/orders?${queryParams}`)
   }
 }
