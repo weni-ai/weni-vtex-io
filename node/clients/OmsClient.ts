@@ -38,6 +38,7 @@ export class OmsClient extends JanusClient {
    * @param queryParams - Query parameters.
    */
   public async getOrders(queryParams: any): Promise<any> {
-    return this.http.get(`/api/oms/pvt/orders?${queryParams}`)
+    const params = new URLSearchParams(queryParams)
+    return this.http.get(`/api/oms/pvt/orders?${params.toString()}`)
   }
 }
