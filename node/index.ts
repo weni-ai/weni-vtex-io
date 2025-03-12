@@ -28,6 +28,7 @@ import { checkProjectByUser } from './middlewares/checkProjectByUser' // Middlew
 import { checkAgentBuilder } from './middlewares/checkAgentBuilder' // Middleware to check agent builder
 import { validateInternalUserAuth } from './middlewares/validateInternalUserAuth' // Middleware to validate internal user authentication
 import { getSkillMetrics } from './middlewares/getSkillMetrics'
+import { getOrders } from './middlewares/getOrders'
 
 // Setting cache duration in milliseconds and creating an LRUCache instance
 const TIMEOUT_MS = 60000
@@ -138,6 +139,10 @@ export default new Service({
 
     getSkillMetrics: method({
       GET: [validateVtexInternalRequest, getSkillMetrics],
+    }),
+
+    getOrders: method({
+      GET: [validateInternalUserAuth, getOrders],
     }),
   },
 })

@@ -79,6 +79,10 @@
     "getSkillMetrics": {
       "path": "/_v/get-skill-metrics",
       "public": true
+    },
+    "getOrders": {
+      "path": "/_v/orders",
+      "public": true
     }
   }
 }
