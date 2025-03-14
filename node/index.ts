@@ -29,7 +29,7 @@ import { checkAgentBuilder } from './middlewares/checkAgentBuilder' // Middlewar
 import { validateInternalUserAuth } from './middlewares/validateInternalUserAuth' // Middleware to validate internal user authentication
 import { getSkillMetrics } from './middlewares/getSkillMetrics' // Middleware to get skill metrics
 import { getOrders } from './middlewares/getOrders' // Middleware to get orders
-import { proxySetVtexStoreType } from './middlewares/proxySetVexStoreType' // Middleware to proxy set VTEX store type
+import { proxySetVtexStoreType } from './middlewares/proxySetVtexStoreType' // Middleware to proxy set VTEX store type
 
 // Setting cache duration in milliseconds and creating an LRUCache instance
 const TIMEOUT_MS = 60000
