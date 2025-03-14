@@ -83,6 +83,10 @@
     "getOrders": {
       "path": "/_v/orders",
       "public": true
+    },
+    "proxySetVtexStoreType": {
+      "path": "/_v/set-vtex-store-type",
+      "public": true
     }
   }
 }
