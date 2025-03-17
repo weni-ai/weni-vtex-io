@@ -56,18 +56,22 @@ export async function createAgentBuilder(
       projectUUIDString
     )
 
-    // Checking response for success
-    if (response.results) {
-      ctx.body = { message: 'Agent builder created:', response }
-      ctx.status = 200
-    } else {
-      ctx.body = { message: 'Failed to create agent builder', response }
-      ctx.status = 500
+    ctx.status = typeof response?.status === 'number' ? response.status : 200
+    ctx.body = response?.data ?? {
+      message: 'Agent builder created successfully',
     }
   } catch (error) {
-    console.error('Error creating agent builder:', error)
-    ctx.body = { message: 'Error creating agent builder', error: error.message }
-    ctx.status = 500
+    ctx.status =
+      typeof error.response?.status === 'number' ? error.response.status : 500
+    ctx.body = {
+      message: 'Failed to create agent builder',ctx.status =
+      typeof error.response?.status === 'number' ? error.response.status : 500
+    ctx.body = {
+      message: 'Failed to update VTEX store type',
+      error: error.message ?? 'Internal server error',
+    }
+      error: error.message ?? 'Internal server error',
+    }
   }
 
   await next()
