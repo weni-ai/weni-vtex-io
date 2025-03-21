@@ -44,6 +44,7 @@ export async function getFeatureList(
     ctx.body = {
       message: 'Features available for integration',
       features: response.results || [],
+      store_type: response.store_type,
     }
 
     ctx.status = 200

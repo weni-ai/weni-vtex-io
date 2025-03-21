@@ -1,5 +1,5 @@
-import { ServiceContext } from '@vtex/api';
-import { Clients } from '../clients'
+import type { ServiceContext } from '@vtex/api'
+import type { Clients } from '../clients'
 
 /**
  * Middleware to retrieve all integrated features for a specific project.
@@ -35,7 +35,8 @@ export async function getIntegratedFeaturesList(ctx: ServiceContext<Clients>, ne
 
     ctx.body = {
       message: 'Integrated features',
-      integratedFeatures: response.results || []
+      integratedFeatures: response.results || [],
+      store_type: response.store_type,
     }
 
     ctx.status = 200
