@@ -51,7 +51,7 @@ function AdminExample() {
 
   const baseAddress = binding?.canonicalBaseAddress ?? '';
 
-  const VTEXWebapp = new URL('https://appvtexio.stg.cloud.weni.ai');
+  const VTEXWebapp = new URL('https://appvtexio.weni.ai');
   VTEXWebapp.searchParams.append('base_address', baseAddress);
   VTEXWebapp.searchParams.append('locale', locale);
 
