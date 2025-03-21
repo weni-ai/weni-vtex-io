@@ -1,21 +1,28 @@
-import { ServiceContext } from '@vtex/api'
-import { Clients } from '../clients'
+import type { ServiceContext } from '@vtex/api'
+
+import type { Clients } from '../clients'
 
 /**
  * Middleware to retrieve all available features for a specific project.
- * 
+ *
  * @param ctx - VTEX IO context object.
  * @param next - Function to proceed to the next middleware.
  */
-export async function getFeatureList(ctx: ServiceContext<Clients>, next: () => Promise<any>) {
+export async function getFeatureList(
+  ctx: ServiceContext<Clients>,
+  next: () => Promise<any>
+) {
   const { projectUUID } = ctx.query
-  const commerceClient = ctx.clients.commerceClient
+  const { commerceClient } = ctx.clients
 
-  const projectUUIDString = Array.isArray(projectUUID) ? projectUUID[0] : projectUUID
+  const projectUUIDString = Array.isArray(projectUUID)
+    ? projectUUID[0]
+    : projectUUID
 
   if (!projectUUIDString) {
     ctx.status = 400
     ctx.body = { message: 'Project UUID is required' }
+
     return
   }
 
@@ -35,7 +42,8 @@ export async function getFeatureList(ctx: ServiceContext<Clients>, next: () => P
 
   ctx.body = {
     message: 'Features available for integration',
-    features: response.results || []
+    features: response.results || [],
+    store_type: response.store_type,
   }
 
   ctx.status = 200
