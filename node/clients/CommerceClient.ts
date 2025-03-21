@@ -57,7 +57,7 @@ export class CommerceClient extends ExternalClient {
    * @returns Promise resolving to the list of integrated features.
    */
   public async getIntegratedFeatures(
-    params: { category: string, can_vtex_integrate: string },
+    params: { category: string; can_vtex_integrate: string },
     token: string,
     projectUUID: string
   ): Promise<any> {
@@ -183,6 +183,29 @@ export class CommerceClient extends ExternalClient {
     return this.http.post(url, data, {
       headers: {
         Authorization: `${token}`,
+      },
+    })
+  }
+
+  /**
+   * Sets the VTEX store type for a given project.
+   *
+   * @param projectUUID - The unique identifier of the project.
+   * @param data - The payload containing the VTEX store type (or other fields in the future).
+   * @param token - Authorization token for internal communication.
+   * @returns Promise resolving to the response from the backend.
+   */
+  public async setVtexStoreType(
+    projectUUID: string,
+    data: Record<string, any>,
+    token: string
+  ): Promise<any> {
+    const url = `/api/vtex-projects/${projectUUID}/set-vtex-store-type/`
+
+    return this.http.post(url, data, {
+      headers: {
+        Authorization: `${token}`,
+        'Content-Type': 'application/json',
       },
     })
   }

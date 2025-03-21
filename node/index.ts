@@ -27,7 +27,9 @@ import { checkWhatsAppIntegration } from './middlewares/checkWhatAppIntegration'
 import { checkProjectByUser } from './middlewares/checkProjectByUser' // Middleware to check project by user
 import { checkAgentBuilder } from './middlewares/checkAgentBuilder' // Middleware to check agent builder
 import { validateInternalUserAuth } from './middlewares/validateInternalUserAuth' // Middleware to validate internal user authentication
-import { getSkillMetrics } from './middlewares/getSkillMetrics'
+import { getSkillMetrics } from './middlewares/getSkillMetrics' // Middleware to get skill metrics
+import { getOrders } from './middlewares/getOrders' // Middleware to get orders
+import { proxySetVtexStoreType } from './middlewares/proxySetVtexStoreType' // Middleware to proxy set VTEX store type
 
 // Setting cache duration in milliseconds and creating an LRUCache instance
 const TIMEOUT_MS = 60000
@@ -138,6 +140,14 @@ export default new Service({
 
     getSkillMetrics: method({
       GET: [validateVtexInternalRequest, getSkillMetrics],
+    }),
+
+    getOrders: method({
+      GET: [validateInternalUserAuth, getOrders],
+    }),
+
+    proxySetVtexStoreType: method({
+      POST: [validateVtexInternalRequest, proxySetVtexStoreType],
     }),
   },
 })
