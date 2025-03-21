@@ -16,8 +16,6 @@ export async function disableFeature(ctx: ServiceContext<Clients>, next: () => P
     const { project_uuid, feature_uuid } = requestBody
     const commerceClient = ctx.clients.commerceClient
 
-    console.log(project_uuid, feature_uuid)
-
     const authClient = ctx.clients.internalWeniAuthClient
     const headers = await authClient.getAuthHeaders()
 
