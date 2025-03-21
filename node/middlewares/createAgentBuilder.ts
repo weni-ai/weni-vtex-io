@@ -29,6 +29,7 @@ export async function createAgentBuilder(
     if (!projectUUIDString) {
       ctx.status = 400
       ctx.body = { message: 'Project UUID is required' }
+
       return
     }
 
@@ -37,7 +38,7 @@ export async function createAgentBuilder(
 
     const requestBody = await json(ctx.req)
     const { agent, links } = requestBody
-    const final_agent = {
+    const finalAgent = {
       name: agent.name,
       goal: agent.objective,
       role: agent.occupation,
@@ -46,7 +47,7 @@ export async function createAgentBuilder(
 
     // Setting the body for request to nexus module
     const body = {
-      agent: final_agent,
+      agent: finalAgent,
       links,
     }
 
@@ -62,15 +63,12 @@ export async function createAgentBuilder(
     }
   } catch (error) {
     ctx.status =
-      typeof error.response?.status === 'number' ? error.response.status : 500
+      typeof (error as any).response?.status === 'number'
+        ? (error as any).response.status
+        : 500
     ctx.body = {
-      message: 'Failed to create agent builder',ctx.status =
-      typeof error.response?.status === 'number' ? error.response.status : 500
-    ctx.body = {
-      message: 'Failed to update VTEX store type',
-      error: error.message ?? 'Internal server error',
-    }
-      error: error.message ?? 'Internal server error',
+      message: 'Failed to create agent builder',
+      error: (error as any).message ?? 'Internal server error',
     }
   }
 
