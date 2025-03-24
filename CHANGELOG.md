@@ -1,5 +1,5 @@
-## [0.0.1] - 2024-11-14
+## [1.0.0] - 2025-03-21
 
 ### Added
 
-- Initial Weni Vtex-IO
+- Initial Weni Vtex-IO App
