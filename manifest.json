@@ -22,7 +22,7 @@
     "vtex.pixel-interfaces": "1.x"
   },
   "billingOptions": {
-    "type": "billable",
+    "type": "free",
     "support": {
       "email": "suporte.weni@vtex.com"
     },
