@@ -1,0 +1,19 @@
+{
+  "name": "weni-agentic-ai",
+  "headline": "Aplicación para configurar funciones en weni",
+  "overview": "1. Visión General\n\nWeni Agentic AI es la forma más rápida y fácil de mejorar la experiencia del cliente (CX) para las tiendas VTEX. Con una configuración sin complicaciones que incluye estándares y directrices preconfigurados, eliminamos la complejidad de implementación para casos de uso como Seguimiento de Estado de Pedidos y recuperación de Carritos Abandonados (Devoluciones e Intercambios próximamente).\n\nSolo instale la aplicación, complete algunos campos y active las soluciones en plug-and-play instantáneamente. La integración ocurre directamente a través de VTEX, permitiendo que los agentes comiencen a operar en solo unos pocos pasos — simplemente conecte el canal de WhatsApp Business API, que ya está configurado durante el proceso de creación.\n\nCon agentes inteligentes, Weni Agentic AI comprende el contexto de las interacciones, procesa solicitudes complejas y proporciona respuestas personalizadas para mejorar la experiencia del cliente.\n\n2. Información Adicional\n\nSi su tienda requiere más personalización, puede acceder a la Plataforma Weni para expandir sus posibilidades. Mientras que la aplicación es una versión ligera y optimizada de la Plataforma Weni, esta extensión le permite enriquecer la base de contenido de su agente y mejorar su estrategia de CX.\n\n3. Compatibilidad\n\n✔ Cualquier tienda VTEX\n\n4. Requisitos de Configuración\n\n✔ WhatsApp Business API: Necesario para activar las soluciones, configurado durante el proceso de creación.",
+  "features": [
+    "Integración rápida: Configure todo directamente en VTEX.",
+    "Activación instantánea: Instale la aplicación, complete algunos detalles y comience a usarla.",
+    "Agentes listos para usar: Agentes de Estado de Pedido y Carrito Abandonado disponibles de inmediato.",
+    "Control total: Active o desactive la solución en cualquier momento, con solo un clic.",
+    "Configuración de preferencias: Personalice reglas, como programaciones de notificación, según el contexto de cada agente.",
+    "Interacción inteligente: Análisis de contexto, comprensión de demanda y respuestas personalizadas."
+  ],
+  "additionalinformation": "Si su tienda requiere más personalización, puede acceder a la Plataforma Weni para expandir sus posibilidades. Mientras que la aplicación es una versión ligera y optimizada de la Plataforma Weni, esta extensión le permite enriquecer la base de contenido de su agente y mejorar su estrategia de CX.",
+  "video": "https://www.youtube.com/embed/aizKJBEkZyk",
+  "websiteURL": "https://www.weni.ai",
+  "support": {
+    "email": "suporte.weni@vtex.com"
+  }
+}
