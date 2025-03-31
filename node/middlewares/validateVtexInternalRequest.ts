@@ -27,9 +27,21 @@ export async function validateVtexInternalRequest(
     ctx.status = 401
     ctx.body = {
       message: 'Unauthorized: Request is not from a valid VTEX IO environment.',
-      error: `Missing required VTEX headers: ${missingHeaders.join(', ')}`,
-      headers: { vtexAccount, vtexCaller, vtexWorkspace },
     }
+
+    // Log detailed error information for internal monitoring
+    console.error(
+      `Unauthorized request detected: Missing VTEX headers [${missingHeaders.join(
+        ', '
+      )}]`,
+      {
+        missingHeaders,
+        headers: { vtexAccount, vtexCaller, vtexWorkspace },
+        path: ctx.path,
+        method: ctx.method,
+        ip: ctx.ip,
+      }
+    )
 
     return
   }
