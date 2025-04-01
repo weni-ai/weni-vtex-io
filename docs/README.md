@@ -1,6 +1,6 @@
 📢 Use this project, [contribute](https://github.com/vtex-apps/CHANGEME) to it or open issues to help evolve it using [Store Discussion](https://github.com/vtex-apps/store-discussion).
 
-# APP NAME
+# Weni Agentic AI
 
 <!-- DOCS-IGNORE:start -->
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
@@ -8,11 +8,22 @@
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 <!-- DOCS-IGNORE:end -->
 
-Under the app's name, you should explain the topic, giving a **brief description** of the **app's functionality** (what is it for?) in a store.
+## 1. Overview
 
-Next, you can **add media** (either an image of a GIF) if possible, so that users can better understand how the app works in practice. 
+Weni Agentic AI is the fastest and easiest way to enhance customer experience (CX) for VTEX stores. With a hassle-free setup that includes pre-configured standards and guidelines, we eliminate the complexity of deployment for use cases such as Order Status Tracking and Abandoned Cart recovery (Returns and Exchanges coming soon).
 
-![Media Placeholder](https://user-images.githubusercontent.com/52087100/71204177-42ca4f80-227e-11ea-89e6-e92e65370c69.png)
+Just download the app, fill in a few fields, and activate the solutions in plug-and-play instantly. The integration happens directly through VTEX, allowing agents to start operating in just a few steps — simply connect the WhatsApp Business API channel, which is already configured during the creation process.
+
+With intelligent agents, Weni Agentic AI understands the context of interactions, processes complex requests, and provides personalized responses to enhance the customer experience.
+
+## 2. Key Features
+
+* Fast integration: Set everything up directly in VTEX.
+* Instant activation: Download the app, fill in a few details, and start using it.
+* Ready-to-use agents: Order Status and Abandoned Cart agents available out of the box.
+* Full control: Enable or disable the solution anytime, with just one click.
+* Preference settings: Customize rules, such as notification schedules, according to each agent's context.
+* Intelligent interaction: Context analysis, demand understanding, and personalized responses.
 
 ## Configuration
 
@@ -20,25 +31,15 @@ It is possible to install in your store either by using App Store or the VTEX IO
 
 ### Using VTEX App Store
 
-1. Access the **Apps** section in your account's admin page and look for the Icommkt box;
+1. Access the **Apps** section in your account's admin page and look for the Weni Agentic AI;
 2. Then, click on the **Install** button;
-3. You'll see a warning message about needing to enter the necessary configurations. Scroll down and type in your **NAME OF A SETTINGS FIELD** in the `NAME OF THE APP` field.
+3. You'll see a warning message about needing to enter the necessary configurations.
 4. Click on **Save**.
 
 ### Using VTEX IO Toolbelt
 
-1. [Install](https://vtex.io/docs/recipes/development/installing-an-app/) the `vtex.icommkt@0.x` app. You can confirm that the app has now been installed by running `vtex ls` again. 
-2. Access the **Apps** section in your account's admin page and look for the NAME OF THE APP box. Once you find it, click on the box.
-3. Fill in the `NAME OF THE APP` field with your **NAME OF THE SETTINGS FIELD**.
-4. Click on **Save**.
-
-<!-- Remember to also **showcase any necessary disclaimer** related to the app in this section, such as the different behavior it may display during its configuration. -->
-
-## Modus Operandi *(not mandatory)*
-
-There are scenarios in which an app can behave differently in a store, according to its configuration. It's crucial then to go through these **behavioral changes** in this section, allowing users to fully understand the **practical application** of the app in their store.
-
-If you feel compelled to give further details, such as the app's **relationship with others**, don't hesitate to use this section. 
+1. [Install](https://vtex.io/docs/recipes/development/installing-an-app/) the `wenipartnerbr.weni-agentic-ai@4.x` app. You can confirm that the app has now been installed by running `vtex ls` again. 
+2. Access the **Apps** section in your account's admin page and look for the Weni Agentic AI box. Once you find it, click on the box.
 
 <!-- DOCS-IGNORE:start -->
 ## Contributors ✨
