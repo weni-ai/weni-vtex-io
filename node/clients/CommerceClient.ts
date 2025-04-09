@@ -90,7 +90,7 @@ export class CommerceClient extends ExternalClient {
       url,
       {
         created_by_vtex: true,
-        ...integrationData, // Pass all fields dynamically
+        ...integrationData,
       },
       {
         headers: {
@@ -98,6 +98,27 @@ export class CommerceClient extends ExternalClient {
         },
       }
     )
+  }
+
+  /**
+   * Integrates a Nexus agent with a specified project.
+   *
+   * @param data - Object containing project_uuid and agent_uuid.
+   * @param token - Authorization token for internal communication.
+   * @returns Promise resolving to the result of the agent integration.
+   */
+  public async integrateNexusAgent(
+    data: { project_uuid: string; agent_uuid: string },
+    token: string
+  ): Promise<any> {
+    const url = `/v2/nexus/integrate-agent/`
+
+    return this.http.post(url, data, {
+      headers: {
+        Authorization: `${token}`,
+        'Content-Type': 'application/json',
+      },
+    })
   }
 
   /**
@@ -155,7 +176,7 @@ export class CommerceClient extends ExternalClient {
    */
   public async updateFeatureSettings(
     featureUUID: string,
-    integrationData: Record<string, any>, // Accepts dynamic fields
+    integrationData: Record<string, any>,
     token: string
   ): Promise<any> {
     const url = `/v2/integrated_feature/${featureUUID}/settings/`
