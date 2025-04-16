@@ -69,6 +69,17 @@ const fetchUserInfo = async (accessToken: string): Promise<UserInfo> => {
 }
 
 /**
+ * Extracts bearer token from Authorization header.
+ * @param header - Authorization header string.
+ * @returns Token string or null if format is invalid.
+ */
+const extractBearerToken = (header: string): string | null => {
+  const [scheme, token] = header.split(' ')
+
+  return scheme === 'Bearer' && token ? token : null
+}
+
+/**
  * Middleware to validate internal user authentication.
  * @param ctx - The service context.
  * @param next - The next middleware function to execute.
@@ -79,12 +90,13 @@ export async function validateInternalUserAuth(
 ) {
   ctx.set('Cache-Control', 'no-cache')
 
-  const token = ctx.query.token as string
+  const authHeader = ctx.header.authorization
+  const token = authHeader ? extractBearerToken(authHeader) : null
 
-  // Validate if token is present
+  // Validate if token is present and properly formatted
   if (!token) {
     ctx.status = 401
-    ctx.body = { message: 'JWT Token is missing.' }
+    ctx.body = { message: 'JWT Token is missing or invalid format.' }
 
     return
   }
@@ -92,20 +104,21 @@ export async function validateInternalUserAuth(
   try {
     // Check if the token is cached
     if (tokenCache.has(token)) {
-      // Try-catch block for the next middleware
       try {
         await next()
       } catch (error) {
+        const err = error as Error & { response?: { data?: unknown } }
+
         console.error('Error in next middleware (cached token):', {
-          message: error.message,
-          stack: error.stack,
-          response: error.response?.data || 'No response data',
+          message: err.message,
+          stack: err.stack,
+          response: err.response?.data || 'No response data',
         })
         ctx.status = 500
         ctx.body = {
           message: 'Internal server error in the next middleware.',
-          error: error.message,
-          details: error.response?.data || 'No additional details',
+          error: err.message,
+          details: err.response?.data || 'No additional details',
         }
       }
 
@@ -138,16 +151,18 @@ export async function validateInternalUserAuth(
     // Cache the token after successful validation
     tokenCache.set(token, true)
   } catch (error) {
+    const err = error as Error & { response?: { data?: unknown } }
+
     console.error('JWT validation error:', {
-      message: error.message,
-      stack: error.stack,
-      response: error.response?.data || 'No response data',
+      message: err.message,
+      stack: err.stack,
+      response: err.response?.data || 'No response data',
     })
     ctx.status = 401
     ctx.body = {
       message: 'Invalid token.',
-      error: error.message,
-      details: error.response?.data || 'No additional details',
+      error: err.message,
+      details: err.response?.data || 'No additional details',
     }
 
     return
@@ -157,16 +172,18 @@ export async function validateInternalUserAuth(
   try {
     await next()
   } catch (error) {
+    const err = error as Error & { response?: { data?: unknown } }
+
     console.error('Error in next middleware:', {
-      message: error.message,
-      stack: error.stack,
-      response: error.response?.data || 'No response data',
+      message: err.message,
+      stack: err.stack,
+      response: err.response?.data || 'No response data',
     })
     ctx.status = 500
     ctx.body = {
       message: 'Internal server error in the next middleware.',
-      error: error.message,
-      details: error.response?.data || 'No additional details',
+      error: err.message,
+      details: err.response?.data || 'No additional details',
     }
   }
 }
