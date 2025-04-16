@@ -143,7 +143,7 @@ export default new Service({
     }),
 
     getOrders: method({
-      GET: [validateInternalUserAuth, getOrders],
+      POST: [validateInternalUserAuth, getOrders],
     }),
 
     proxySetVtexStoreType: method({
