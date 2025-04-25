@@ -87,6 +87,10 @@
     "proxySetVtexStoreType": {
       "path": "/_v/set-vtex-store-type",
       "public": true
+    },
+    "proxyWeniWebChatIntegration": {
+      "path": "/_v/wwc-integration",
+      "public": true
     }
   }
 }
