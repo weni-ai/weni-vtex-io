@@ -69,17 +69,6 @@ const fetchUserInfo = async (accessToken: string): Promise<UserInfo> => {
 }
 
 /**
- * Extracts bearer token from Authorization header.
- * @param header - Authorization header string.
- * @returns Token string or null if format is invalid.
- */
-const extractBearerToken = (header: string): string | null => {
-  const [scheme, token] = header.split(' ')
-
-  return scheme === 'Bearer' && token ? token : null
-}
-
-/**
  * Middleware to validate internal user authentication.
  * @param ctx - The service context.
  * @param next - The next middleware function to execute.
@@ -90,8 +79,10 @@ export async function validateInternalUserAuth(
 ) {
   ctx.set('Cache-Control', 'no-cache')
 
-  const authHeader = ctx.header.authorization
-  const token = authHeader ? extractBearerToken(authHeader) : null
+  const rawHeader = ctx.get('x-weni-auth')
+  const token = rawHeader?.startsWith('Bearer ')
+    ? rawHeader.replace('Bearer ', '')
+    : rawHeader
 
   // Validate if token is present and properly formatted
   if (!token) {
