@@ -152,7 +152,7 @@ export default new Service({
     }),
 
     proxyWeniWebChatIntegration: method({
-      POST: [proxyWeniWebChatIntegration],
+      POST: [validateVtexInternalRequest, proxyWeniWebChatIntegration],
     }),
   },
 })
