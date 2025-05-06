@@ -126,6 +126,28 @@ export class CommerceClient extends ExternalClient {
   }
 
   /**
+   * Disables a Nexus agent with a specified project.
+   *
+   * @param data - Object containing project_uuid and agent_uuid.
+   * @param token - Authorization token for internal communication.
+   * @returns Promise resolving to the result of the agent disable operation.
+   */
+  public async disableNexusAgent(
+    data: { project_uuid: string; agent_uuid: string },
+    token: string
+  ): Promise<any> {
+    const url = `/v2/nexus/integrate-agent/`
+
+    return this.http.delete(url, {
+      headers: {
+        Authorization: `${token}`,
+        'Content-Type': 'application/json',
+      },
+      data,
+    })
+  }
+
+  /**
    * Sends the abandoned cart notification to the Commerce backend.
    *
    * @param data - The data to be sent.
