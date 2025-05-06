@@ -44,7 +44,7 @@ export async function integrateFeature(
     const headers = await authClient.getAuthHeaders()
 
     if (isNexusAgent && agentUuid) {
-      await commerceClient.integrateNexusAgent(
+      const integrationResponse = await commerceClient.integrateNexusAgent(
         {
           project_uuid: projectUuid,
           agent_uuid: agentUuid,
@@ -54,6 +54,7 @@ export async function integrateFeature(
 
       ctx.body = {
         message: `Nexus Agent ${agentUuid} integrated successfully`,
+        response: integrationResponse,
       }
       ctx.status = 200
 
@@ -86,8 +87,9 @@ export async function integrateFeature(
     )
 
     ctx.vtex.logger.info(
-      `Integrated feature: ${featureUuid} with payload:`,
-      integrationPayload
+      `Integrated feature: ${featureUuid} with payload: ${JSON.stringify(
+        integrationPayload
+      )}`
     )
 
     ctx.body = {
@@ -96,8 +98,11 @@ export async function integrateFeature(
     }
     ctx.status = 200
   } catch (error) {
-    ctx.vtex.logger.error('Error integrating feature:', error)
-    ctx.body = { message: 'Error integrating feature', error: error.message }
+    const errorMessage =
+      error instanceof Error ? error.message : 'Unknown error'
+
+    ctx.vtex.logger.error(`Error integrating feature: ${errorMessage}`)
+    ctx.body = { message: 'Error integrating feature', error: errorMessage }
     ctx.status = 500
   }
 

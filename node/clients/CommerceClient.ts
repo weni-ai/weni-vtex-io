@@ -34,7 +34,11 @@ export class CommerceClient extends ExternalClient {
    * @returns Promise resolving to the list of features.
    */
   public async getFeatures(
-    params: { category: string; can_vtex_integrate: string },
+    params: {
+      category: string
+      can_vtex_integrate: string
+      nexus_agents: string
+    },
     token: string,
     projectUUID: string
   ): Promise<any> {
