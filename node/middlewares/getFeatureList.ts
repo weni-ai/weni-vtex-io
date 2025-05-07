@@ -10,7 +10,7 @@ import type { Clients } from '../clients'
  */
 export async function getFeatureList(
   ctx: ServiceContext<Clients>,
-  next: () => Promise<any>
+  next: () => Promise<void>
 ) {
   try {
     const { projectUUID } = ctx.query
@@ -36,6 +36,7 @@ export async function getFeatureList(
       {
         category: 'ACTIVE',
         can_vtex_integrate: 'true',
+        nexus_agents: 'true',
       },
       headers.Authorization,
       projectUUIDString
@@ -44,6 +45,7 @@ export async function getFeatureList(
     ctx.body = {
       message: 'Features available for integration',
       features: response.results || [],
+      agents: response.nexus_agents,
       store_type: response.store_type,
     }
 
