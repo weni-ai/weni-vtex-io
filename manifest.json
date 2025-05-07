@@ -1,7 +1,7 @@
 {
   "name": "weni-agentic-ai",
   "vendor": "wenipartnerbr",
-  "version": "4.0.4",
+  "version": "4.0.5",
   "title": "Weni Agentic AI",
   "description": "App for configuring features on weni",
   "overview": "\n1. Overview\n\nWeni Agentic AI is the fastest and easiest way to enhance customer experience (CX) for VTEX stores. With a hassle-free setup that includes pre-configured standards and guidelines, we eliminate the complexity of deployment for use cases such as Order Status Tracking and Abandoned Cart recovery (Returns and Exchanges coming soon).\n\nJust download the app, fill in a few fields, and activate the solutions in plug-and-play instantly. The integration happens directly through VTEX, allowing agents to start operating in just a few steps — simply connect the WhatsApp Business API channel, which is already configured during the creation process.\n\nWith intelligent agents, Weni Agentic AI understands the context of interactions, processes complex requests, and provides personalized responses to enhance the customer experience.\n\n2. Additional Information\n\nIf your store requires more customization, you can access the Weni Platform to expand your possibilities. While the app is a lightweight and optimized version of the Weni Platform, this extension allows you to enrich your agent’s content base and enhance your CX strategy.\n\n3. Compatibility\n\n✔ Any VTEX store\n\n4. Setup Requirements\n\n✔ WhatsApp Business API: Required to activate the solutions, configured during the creation process.",
