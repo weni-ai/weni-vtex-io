@@ -87,6 +87,10 @@
     "proxySetVtexStoreType": {
       "path": "/_v/set-vtex-store-type",
       "public": true
+    },
+    "proxyGenericRequest": {
+      "path": "/_v/proxy-request",
+      "public": true
     }
   }
 }

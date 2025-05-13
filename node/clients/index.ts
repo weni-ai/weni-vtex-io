@@ -8,6 +8,7 @@ import { AgentBuilderClient } from './AgentBuilderClient'
 import { OmsClient } from './OmsClient'
 import { OrderFormClient } from './OrderFormClient'
 import { InsightsClient } from './InsightsClient'
+import { GenericExternalHttpClient } from './GenericHttpClient'
 
 export class Clients extends IOClients {
   public get commerceClient() {
@@ -40,5 +41,9 @@ export class Clients extends IOClients {
 
   public get insightsClient() {
     return this.getOrSet('insightsClient', InsightsClient)
+  }
+
+  public get genericHttp() {
+    return this.getOrSet('genericHttp', GenericExternalHttpClient)
   }
 }
