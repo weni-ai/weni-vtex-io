@@ -62,6 +62,7 @@ function AdminExample() {
           title='vtex-webapp'
           src={VTEXWebapp.toString()}
           style={{ display: 'block', width: '100%', height: '100vh' }}
+          allow="clipboard-write"
         ></iframe>
       </ThemeProvider>
     </I18nProvider>
