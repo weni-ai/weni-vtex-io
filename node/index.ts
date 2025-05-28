@@ -91,7 +91,7 @@ export default new Service({
       POST: [validateVtexInternalRequest, integrateAvailableFeatures],
     }),
     proxyAbandonedCartNotification: method({
-      POST: [validateVtexInternalRequest, proxyAbandonedCartNotification],
+      POST: [proxyAbandonedCartNotification],
     }),
     createUserAndProject: method({
       POST: [validateVtexInternalRequest, createUserAndProject],
