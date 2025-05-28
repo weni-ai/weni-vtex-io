@@ -91,6 +91,10 @@
     "proxyGenericRequest": {
       "path": "/_v/proxy-request",
       "public": true
+    },
+    "getAccountIdentifier": {
+      "path": "/_v/account-identifier",
+      "public": true
     }
   }
 }
