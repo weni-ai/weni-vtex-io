@@ -9,6 +9,7 @@ import { OmsClient } from './OmsClient'
 import { OrderFormClient } from './OrderFormClient'
 import { InsightsClient } from './InsightsClient'
 import { GenericExternalHttpClient } from './GenericHttpClient'
+import { AccountIdentifier } from './AccountIdentifier'
 
 export class Clients extends IOClients {
   public get commerceClient() {
@@ -45,5 +46,9 @@ export class Clients extends IOClients {
 
   public get genericHttp() {
     return this.getOrSet('genericHttp', GenericExternalHttpClient)
+  }
+
+  public get accountIdentifier() {
+    return this.getOrSet('accountIdentifier', AccountIdentifier)
   }
 }

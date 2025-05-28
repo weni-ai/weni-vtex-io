@@ -26,9 +26,7 @@
     "support": {
       "email": "suporte.weni@vtex.com"
     },
-    "availableCountries": [
-      "*"
-    ]
+    "availableCountries": ["*"]
   },
   "builders": {
     "node": "6.x",
@@ -159,6 +157,9 @@
     },
     {
       "name": "ListOrders"
+    },
+    {
+      "name": "Get_Account_By_Identifier"
     }
   ],
   "$schema": "https://raw.githubusercontent.com/vtex/node-vtex-api/master/gen/manifest.schema"
