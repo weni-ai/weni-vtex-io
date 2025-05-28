@@ -27,6 +27,6 @@ export class AccountIdentifier extends JanusClient {
    * @returns A promise that resolves to the account identifier data.
    */
   public async getAccountIdentifier(): Promise<any> {
-    return this.http.getRaw('/api/license-manager/account1')
+    return this.http.getRaw('/api/license-manager/account')
   }
 }
