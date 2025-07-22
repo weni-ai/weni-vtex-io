@@ -32,11 +32,16 @@ export async function checkProjectByUser(
 
     ctx.status = 200
     ctx.body = response
-  } catch (error) {
-    ctx.status = 500
+  } catch (err) {
+    // Type assertion to handle 'err' as an Error object
+    const error = err as Error
+
+    ctx.status = (error as any).response?.status
+      ? Number((error as any).response.status)
+      : 500 // Ensure status is a number
     ctx.body = {
       message: 'Error checking user project',
-      error: error.message,
+      error: (error as any).response?.data ?? error.message ?? 'Unknown error',
     }
   }
 
