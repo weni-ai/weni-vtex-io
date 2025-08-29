@@ -9,6 +9,7 @@ import { OmsClient } from './OmsClient'
 import { OrderFormClient } from './OrderFormClient'
 import { InsightsClient } from './InsightsClient'
 import { GenericExternalHttpClient } from './GenericHttpClient'
+import { VtexGenericClient } from './VtexGenericClient'
 import { AccountIdentifier } from './AccountIdentifier'
 
 export class Clients extends IOClients {
@@ -46,6 +47,10 @@ export class Clients extends IOClients {
 
   public get genericHttp() {
     return this.getOrSet('genericHttp', GenericExternalHttpClient)
+  }
+
+  public get vtexGeneric() {
+    return this.getOrSet('vtexGeneric', VtexGenericClient)
   }
 
   public get accountIdentifier() {

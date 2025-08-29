@@ -31,6 +31,7 @@ import { getSkillMetrics } from './middlewares/getSkillMetrics' // Middleware to
 import { getOrders } from './middlewares/getOrders' // Middleware to get orders
 import { proxySetVtexStoreType } from './middlewares/proxySetVtexStoreType' // Middleware to proxy set VTEX store type
 import { proxyGenericRequest } from './middlewares/proxyGenericRequest'
+import { proxyVtexRequest } from './middlewares/proxyVtexRequest'
 import { getAccountIdentifier } from './middlewares/getAccountIdentifier'
 
 // Setting cache duration in milliseconds and creating an LRUCache instance
@@ -154,6 +155,10 @@ export default new Service({
 
     proxyGenericRequest: method({
       POST: [validateVtexInternalRequest, proxyGenericRequest],
+    }),
+
+    proxyVtexRequest: method({
+      POST: [validateInternalUserAuth, proxyVtexRequest],
     }),
 
     getAccountIdentifier: method({
