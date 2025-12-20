@@ -26,7 +26,7 @@ import { validateVtexInternalRequest } from './middlewares/validateVtexInternalR
 import { checkWhatsAppIntegration } from './middlewares/checkWhatAppIntegration' // Middleware to check WhatsApp integration
 import { checkProjectByUser } from './middlewares/checkProjectByUser' // Middleware to check project by user
 import { checkAgentBuilder } from './middlewares/checkAgentBuilder' // Middleware to check agent builder
-import { validateInternalUserAuth } from './middlewares/validateInternalUserAuth' // Middleware to validate internal user authentication
+import { validateJWTAuth } from './middlewares/validateJWTAuth' // Middleware to validate JWT authentication for inter-module communication
 import { getSkillMetrics } from './middlewares/getSkillMetrics' // Middleware to get skill metrics
 import { getOrders } from './middlewares/getOrders' // Middleware to get orders
 import { proxySetVtexStoreType } from './middlewares/proxySetVtexStoreType' // Middleware to proxy set VTEX store type
@@ -64,6 +64,12 @@ declare global {
 
   interface State extends RecorderState {
     code: number
+    projectUuid?: string
+    jwtPayload?: {
+      project_uuid: string
+      exp: number
+      iat: number
+    }
   }
 
   interface StatusChangeContext extends EventContext<Clients> {
@@ -104,10 +110,10 @@ export default new Service({
       POST: [validateVtexInternalRequest, createAgentBuilder],
     }),
     getOrdersByEmail: method({
-      GET: [validateInternalUserAuth, getOrdersByEmail],
+      GET: [validateJWTAuth, getOrdersByEmail],
     }),
     getOrderFormDetails: method({
-      GET: [validateInternalUserAuth, getOrderFormDetails],
+      GET: [validateJWTAuth, getOrderFormDetails],
     }),
 
     integrateFeature: method({
@@ -123,7 +129,7 @@ export default new Service({
     }),
 
     getOrderById: method({
-      GET: [validateInternalUserAuth, getOrderById],
+      GET: [validateJWTAuth, getOrderById],
     }),
     getIntegratedFeatures: method({
       GET: [validateVtexInternalRequest, getIntegratedFeaturesList],
@@ -146,7 +152,7 @@ export default new Service({
     }),
 
     getOrders: method({
-      POST: [validateInternalUserAuth, getOrders],
+      POST: [validateJWTAuth, getOrders],
     }),
 
     proxySetVtexStoreType: method({
@@ -158,11 +164,11 @@ export default new Service({
     }),
 
     proxyVtexRequest: method({
-      POST: [validateInternalUserAuth, proxyVtexRequest],
+      POST: [validateJWTAuth, proxyVtexRequest],
     }),
 
     getAccountIdentifier: method({
-      GET: [validateInternalUserAuth, getAccountIdentifier],
+      GET: [validateJWTAuth, getAccountIdentifier],
     }),
   },
 })
