@@ -1,6 +1,5 @@
 import type { RecorderState, ServiceContext } from '@vtex/api'
 import jwt from 'jsonwebtoken'
-import NodeCache from 'node-cache'
 
 import type { Clients } from '../clients'
 import { JWT_PUBLIC_KEY } from '../env'
@@ -27,11 +26,6 @@ interface JWTState extends RecorderState {
  */
 const UUID_REGEX =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
-
-/**
- * Cache configuration (10 minutes TTL) for validated tokens
- */
-const tokenCache = new NodeCache({ stdTTL: 600, checkperiod: 120 })
 
 /**
  * Validates if a string is a valid UUID v4
@@ -92,39 +86,6 @@ export async function validateJWTAuth(
   }
 
   try {
-    // Check if the token is already cached (validated previously)
-    const cachedPayload = tokenCache.get<JWTPayload>(token)
-
-    if (cachedPayload) {
-      console.info('JWT token validated from cache', {
-        projectUuid: cachedPayload.project_uuid,
-      })
-
-      ctx.state.projectUuid = cachedPayload.project_uuid
-      ctx.state.jwtPayload = cachedPayload
-
-      try {
-        await next()
-      } catch (error) {
-        const err = error as Error & { response?: { data?: unknown } }
-
-        console.error('Error in next middleware (cached token):', {
-          message: err.message,
-          stack: err.stack,
-          response: err.response?.data || 'No response data',
-        })
-
-        ctx.status = 500
-        ctx.body = {
-          message: 'Internal server error in the next middleware.',
-          error: err.message,
-          details: err.response?.data || 'No additional details',
-        }
-      }
-
-      return
-    }
-
     // Validate JWT_PUBLIC_KEY is configured
     if (!JWT_PUBLIC_KEY) {
       console.error('JWT validation failed: JWT_PUBLIC_KEY is not configured')
@@ -171,9 +132,6 @@ export async function validateJWTAuth(
 
       return
     }
-
-    // Cache the validated token payload
-    tokenCache.set(token, payload)
 
     // Inject validated data into context state for downstream handlers
     ctx.state.projectUuid = projectUuid
