@@ -11,7 +11,9 @@ export const INTEGRATIONS_ENGINE_API_BASE_URL = ''
 export const COMMERCE_API_BASE_URL = ''
 export const AGENT_BUILDER_BASE_URL = ''
 
-// JWT Public Key for inter-module communication (RS256)
-// This key is used to validate JWT tokens from retail-setup module
-// Format: PEM encoded RSA public key (include -----BEGIN PUBLIC KEY----- and -----END PUBLIC KEY-----)
+// JWT Keys for inter-module communication (RS256)
+// Public key: Used to validate incoming JWT tokens
+// Private key: Used to generate outgoing JWT tokens
+// Format: PEM encoded RSA keys
 export const JWT_PUBLIC_KEY = ''
+export const JWT_PRIVATE_KEY = ''

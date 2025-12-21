@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { isPhoneNumberIgnored } from '../utils/phoneValidator'
+import { getJWTAuthHeaders } from '../utils/jwtGenerator'
 
 export async function allStates(
   ctx: StatusChangeContext,
@@ -43,9 +44,8 @@ export async function allStates(
       }
     }
 
-    // Get authentication token using InternalWeniAuthClient
-    const authClient = ctx.clients.internalWeniAuthClient
-    const headers = await authClient.getAuthHeaders()
+    // Generate JWT token locally with vtex_account (no external OIDC call needed)
+    const headers = getJWTAuthHeaders(ctx.vtex.account)
 
     const { commerceClient } = ctx.clients
 
