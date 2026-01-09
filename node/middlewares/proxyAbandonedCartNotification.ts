@@ -5,6 +5,20 @@ import type { Clients } from '../clients'
 import { getJWTAuthHeaders } from '../utils/jwtGenerator'
 
 /**
+ * Sets CORS headers on the response to allow cross-origin requests.
+ * Required when the storefront uses a custom domain (e.g., loja.com.br)
+ * but the request is sent to the myvtex.com domain.
+ *
+ * @param ctx - VTEX IO context object.
+ */
+function setCorsHeaders(ctx: ServiceContext<Clients>) {
+  ctx.set('Access-Control-Allow-Origin', '*')
+  ctx.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+  ctx.set('Access-Control-Allow-Headers', 'Content-Type, Accept, Authorization')
+  ctx.set('Access-Control-Max-Age', '86400')
+}
+
+/**
  * Middleware to proxy abandoned cart notifications to the Commerce backend.
  * Receives the request payload and forwards it to the internal notification endpoint.
  * Uses JWT token for authentication (no external OIDC call needed).
@@ -16,6 +30,9 @@ export async function proxyAbandonedCartNotification(
   ctx: ServiceContext<Clients>,
   next: () => Promise<void>
 ) {
+  // Set CORS headers for cross-origin requests from custom domains
+  setCorsHeaders(ctx)
+
   try {
     // Parse the JSON body of the incoming request
     const requestBody = await json(ctx.req)
@@ -36,6 +53,16 @@ export async function proxyAbandonedCartNotification(
 
     // Generate JWT token locally with vtex_account (no external OIDC call needed)
     const headers = getJWTAuthHeaders(account)
+
+    // Log the payload being sent to retailsetup for debugging
+    // eslint-disable-next-line no-console
+    console.log(
+      '[proxyAbandonedCartNotification] Sending to retailsetup:',
+      JSON.stringify({
+        endpoint: '/webhook/vtex/abandoned-cart/api/notification/',
+        payload: requestBody,
+      })
+    )
 
     // Forward the request body to the Commerce backend via the client
     const { commerceClient } = ctx.clients
