@@ -22,7 +22,12 @@
     },
     "proxyAbandonedCartNotification": {
       "path": "/_v/abandoned-cart-notification",
-      "public": true
+      "public": true,
+      "cors": {
+        "origins": ["*"],
+        "methods": ["GET", "POST", "OPTIONS"],
+        "headers": ["Content-Type", "Accept", "Authorization"]
+      }
     },
     "createUserAndProject": {
       "path": "/_v/create-user-and-project",
