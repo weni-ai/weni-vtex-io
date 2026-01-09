@@ -54,16 +54,6 @@ export async function proxyAbandonedCartNotification(
     // Generate JWT token locally with vtex_account (no external OIDC call needed)
     const headers = getJWTAuthHeaders(account)
 
-    // Log the payload being sent to retailsetup for debugging
-    // eslint-disable-next-line no-console
-    console.log(
-      '[proxyAbandonedCartNotification] Sending to retailsetup:',
-      JSON.stringify({
-        endpoint: '/webhook/vtex/abandoned-cart/api/notification/',
-        payload: requestBody,
-      })
-    )
-
     // Forward the request body to the Commerce backend via the client
     const { commerceClient } = ctx.clients
     const response = await commerceClient.sendAbandonedCartNotification(
