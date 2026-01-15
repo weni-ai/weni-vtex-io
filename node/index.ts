@@ -99,6 +99,7 @@ export default new Service({
     }),
     proxyAbandonedCartNotification: method({
       POST: [proxyAbandonedCartNotification],
+      OPTIONS: [proxyAbandonedCartNotification],
     }),
     createUserAndProject: method({
       POST: [validateVtexInternalRequest, createUserAndProject],
