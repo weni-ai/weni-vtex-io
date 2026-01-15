@@ -14,7 +14,7 @@ import { getJWTAuthHeaders } from '../utils/jwtGenerator'
 function setCorsHeaders(ctx: ServiceContext<Clients>) {
   ctx.set('Access-Control-Allow-Origin', '*')
   ctx.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
-  ctx.set('Access-Control-Allow-Headers', 'Content-Type, Accept, Authorization')
+  ctx.set('Access-Control-Allow-Headers', '*')
   ctx.set('Access-Control-Max-Age', '86400')
 }
 
@@ -32,6 +32,14 @@ export async function proxyAbandonedCartNotification(
 ) {
   // Set CORS headers for cross-origin requests from custom domains
   setCorsHeaders(ctx)
+
+  // Handle preflight OPTIONS request
+  if (ctx.method === 'OPTIONS') {
+    ctx.status = 204
+    ctx.body = ''
+
+    return
+  }
 
   try {
     // Parse the JSON body of the incoming request
