@@ -64,9 +64,9 @@ declare global {
 
   interface State extends RecorderState {
     code: number
-    projectUuid?: string
+    vtexAccount?: string
     jwtPayload?: {
-      project_uuid: string
+      vtex_account: string
       exp: number
       iat: number
     }
