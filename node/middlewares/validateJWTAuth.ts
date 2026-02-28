@@ -8,7 +8,7 @@ import { JWT_PUBLIC_KEY } from '../env'
  * Interface for the JWT payload from retail-setup module
  */
 interface JWTPayload {
-  project_uuid: string
+  vtex_account: string
   exp: number
   iat: number
 }
@@ -17,41 +17,26 @@ interface JWTPayload {
  * Extended state interface for JWT authentication
  */
 interface JWTState extends RecorderState {
-  projectUuid?: string
+  vtexAccount?: string
   jwtPayload?: JWTPayload
-}
-
-/**
- * UUID v4 validation regex pattern
- */
-const UUID_REGEX =
-  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
-
-/**
- * Validates if a string is a valid UUID v4
- * @param uuid - String to validate
- * @returns True if valid UUID, false otherwise
- */
-const isValidUUID = (uuid: string): boolean => {
-  return UUID_REGEX.test(uuid)
 }
 
 /**
  * Middleware to validate JWT authentication for inter-module communication.
  *
  * This middleware validates JWT tokens signed with RS256 algorithm from the
- * retail-setup Python module. It extracts and validates the project_uuid
+ * retail-setup Python module. It extracts and validates the vtex_account
  * from the token payload.
  *
  * Expected token structure:
  * - Header: x-weni-auth: Bearer <jwt_token> (or just the token without Bearer prefix)
- * - Payload: { project_uuid: string, exp: number, iat: number }
+ * - Payload: { vtex_account: string, exp: number, iat: number }
  *
  * Note: We use x-weni-auth instead of Authorization because VTEX overwrites
  * the standard Authorization header.
  *
  * On successful validation, injects into ctx.state:
- * - projectUuid: The validated project UUID
+ * - vtexAccount: The validated VTEX account
  * - jwtPayload: The full decoded JWT payload
  *
  * @param ctx - VTEX IO service context
@@ -101,12 +86,28 @@ export async function validateJWTAuth(
       algorithms: ['RS256'],
     }) as JWTPayload
 
-    // Validate project_uuid existence in payload
-    const projectUuid = payload.project_uuid
+    // Validate vtex_account existence in payload
+    const tokenVtexAccount = payload.vtex_account
 
-    if (!projectUuid) {
+    if (!tokenVtexAccount) {
+      console.warn('JWT validation failed: Required token claims are missing', {
+        path: ctx.path,
+        method: ctx.method,
+      })
+
+      ctx.status = 401
+      ctx.body = { message: 'Unauthorized: Missing required token parameters.' }
+
+      return
+    }
+
+    // Validate account isolation: token account must match request context account
+    const contextVtexAccount =
+      ctx.vtex?.account ?? (ctx.header['x-vtex-account'] as string | undefined)
+
+    if (!contextVtexAccount) {
       console.warn(
-        'JWT validation failed: project_uuid not found in token payload',
+        'JWT validation failed: Missing VTEX account in request context',
         {
           path: ctx.path,
           method: ctx.method,
@@ -114,27 +115,25 @@ export async function validateJWTAuth(
       )
 
       ctx.status = 401
-      ctx.body = { message: 'project_uuid not found in token payload.' }
+      ctx.body = { message: 'Missing VTEX account in request context.' }
 
       return
     }
 
-    // Validate project_uuid format (must be valid UUID)
-    if (!isValidUUID(projectUuid)) {
-      console.warn('JWT validation failed: Invalid project_uuid format', {
-        projectUuid,
+    if (tokenVtexAccount !== contextVtexAccount) {
+      console.warn('JWT validation failed: Account validation did not pass', {
         path: ctx.path,
         method: ctx.method,
       })
 
-      ctx.status = 401
-      ctx.body = { message: 'Invalid project_uuid format.' }
+      ctx.status = 403
+      ctx.body = { message: 'Forbidden: Account validation failed.' }
 
       return
     }
 
     // Inject validated data into context state for downstream handlers
-    ctx.state.projectUuid = projectUuid
+    ctx.state.vtexAccount = tokenVtexAccount
     ctx.state.jwtPayload = payload
   } catch (error) {
     const err = error as Error & {
