@@ -1,5 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { ClientsConfig, ServiceContext, RecorderState } from '@vtex/api'
+import type {
+  ClientsConfig,
+  ServiceContext,
+  RecorderState,
+  EventContext,
+} from '@vtex/api'
 import { LRUCache, Service } from '@vtex/api'
 
 import { Clients } from './clients'
@@ -31,6 +36,18 @@ declare global {
 
   interface State extends RecorderState {
     code: number
+  }
+
+  // Kept for TypeScript compilation of unused middlewares until they are removed.
+  interface StatusChangeContext extends EventContext<Clients> {
+    body: {
+      domain: string
+      orderId: string
+      currentState: string
+      lastState: string
+      currentChangeDate: string
+      lastChangeDate: string
+    }
   }
 }
 
