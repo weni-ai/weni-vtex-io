@@ -1,0 +1,9 @@
+project_id: "934103"
+base_path: "."
+preserve_hierarchy: true
+
+files:
+  - source: messages/en.json
+    translation: messages/%two_letters_code%.json
+  - source: public/metadata/messages/en-US.json
+    translation: public/metadata/messages/%locale%.json
